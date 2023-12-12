@@ -1,7 +1,28 @@
 import Image from "next/image"
 import Searchbar from "./Searchbar"
-import Chat from "./Chat"
+import ChatComponent from "./Chat"
 import { Create } from "@mui/icons-material"
+
+class Message {
+    origin: String;
+    content: String;
+
+    constructor(origin: String, content: String) {
+        this.origin = origin
+        this.content = content
+    }
+}
+class Chat {
+    title: String;
+    description: String;
+    messages: Array<Message>;
+
+    constructor(title: String, description: String, messages: Array<Message>) {
+        this.title = title
+        this.description = description
+        this.messages = messages
+    }
+}
 
 export default function Sidebar() {
     return (
@@ -11,7 +32,7 @@ export default function Sidebar() {
                 <Create className="text-sm" />
             </div>
             <Searchbar />
-            <Chat />
+            <ChatComponent />
         </section>
     )
 }
