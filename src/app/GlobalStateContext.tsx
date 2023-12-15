@@ -1,10 +1,31 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Chat } from './Sidebar';
+
+// Classes
+export class Message {
+    origin: String;
+    content: String;
+
+    constructor(origin: String, content: String) {
+        this.origin = origin
+        this.content = content
+    }
+}
+export class Chat {
+    title: String;
+    description: String;
+    messages: Array<Message>;
+
+    constructor(title: String, description: String, messages: Array<Message>) {
+        this.title = title
+        this.description = description
+        this.messages = messages
+    }
+}
 
 // Define an interface for your state
 interface IChatState {
-  state: Chat[];
-  setState: React.Dispatch<React.SetStateAction<Chat[]>>;
+  chats: Chat[];
+  setChats: React.Dispatch<React.SetStateAction<Chat[]>>;
 }
 
 // Create a context with the interface
@@ -12,10 +33,10 @@ const GlobalStateContext = createContext<IChatState | null>(null);
 
 // Create a provider component
 export function GlobalStateProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<Chat[]>([]);
+  const [chats, setChats] = useState<Chat[]>([]);
 
   return (
-    <GlobalStateContext.Provider value={{ state, setState }}>
+    <GlobalStateContext.Provider value={{ chats, setChats }}>
       {children}
     </GlobalStateContext.Provider>
   );

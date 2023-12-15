@@ -3,27 +3,6 @@ import Searchbar from "./Searchbar"
 import ChatComponent from "./Chat"
 import { Create } from "@mui/icons-material"
 
-export class Message {
-    origin: String;
-    content: String;
-
-    constructor(origin: String, content: String) {
-        this.origin = origin
-        this.content = content
-    }
-}
-export class Chat {
-    title: String;
-    description: String;
-    messages: Array<Message>;
-
-    constructor(title: String, description: String, messages: Array<Message>) {
-        this.title = title
-        this.description = description
-        this.messages = messages
-    }
-}
-
 export function Sidebar() {
     return (
         <section className="max-w-xs flex gap-3 flex-col">
