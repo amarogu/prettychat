@@ -99,7 +99,7 @@ export function Account() {
                                     if (res.message === 'You are now logged in.') {
                                         setIsLoggedIn(true)
                                         const userRes = await getUser()
-                                        console.log(userRes)
+                                        setUser(userRes)
                                     }
                                 }}
                                 >
