@@ -96,7 +96,6 @@ export function Account() {
                                 onClick={async () => {
                                     closeModal()
                                     const res = await login(username, password)
-                                    console.log(res.message)
                                     if (res.message === 'You are now logged in.') {
                                         setIsLoggedIn(true)
                                         const userRes = await getUser()
