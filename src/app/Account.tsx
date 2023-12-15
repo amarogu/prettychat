@@ -1,5 +1,5 @@
 import { useGlobalState } from './GlobalStateContext';
-import { getUser } from './Networking/user';
+import { getUser, login } from './Networking/user';
 import LoginIcon from '@mui/icons-material/Login';
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
@@ -15,6 +15,13 @@ export function Account() {
     const [isOpen, setIsOpen] = useState(false)
 
     const [isRegistering, setIsRegistering] = useState(false)
+
+    const [password, setPassword] = useState('')
+    const [username, setUsername] = useState('')
+
+    const [regUsername, setRegUsername] = useState('')
+    const [regPassword, setRegPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
 
     function closeModal() {
         setIsOpen(false)
@@ -35,7 +42,7 @@ export function Account() {
     return (
         <div className="p-4 bg-gray rounded">
             <button className='flex w-full justify-between items-center' onClick={openModal}>
-                <p className='font-einaBold'>Login</p>
+                <p className='font-einaBold'>{isLoggedIn ? user?.username : 'Login'}</p>
                 <LoginIcon className='text-sm' />
             </button>
             <Transition appear show={isOpen} as={Fragment}>
@@ -71,8 +78,8 @@ export function Account() {
                                 Login
                             </Dialog.Title>
                             <div className="mt-2 flex flex-col gap-3 items-start">
-                                <Input icon={<BadgeIcon className='text-sm' />} placeholder='Username' type='text' />
-                                <Input icon={<PasswordIcon className='text-sm' />} placeholder='Password' type='password' />
+                                <Input icon={<BadgeIcon className='text-sm' />} placeholder='Username' type='text' value={username} onChange={setUsername} />
+                                <Input icon={<PasswordIcon className='text-sm' />} placeholder='Password' type='password' value={password} onChange={setPassword} />
                                 <button onClick={() => {
                                     closeModal()
                                     showRegister()
@@ -85,7 +92,9 @@ export function Account() {
                                 <button
                                 type="button"
                                 className="inline-flex justify-center rounded-md border border-transparent bg-accent px-4 py-2 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                onClick={closeModal}
+                                onClick={() => {
+                                    closeModal()
+                                }}
                                 >
                                 Login
                                 </button>
@@ -129,9 +138,9 @@ export function Account() {
                                 Register
                             </Dialog.Title>
                             <div className="mt-2 flex flex-col gap-3 items-start">
-                                <Input icon={<BadgeIcon className='text-sm' />} placeholder='Username' type='text' />
-                                <Input icon={<PasswordIcon className='text-sm' />} placeholder='Password' type='password' />
-                                <Input icon={<CheckIcon className='text-sm' />} placeholder='Confirm Password' type='password' />
+                                <Input icon={<BadgeIcon className='text-sm' />} placeholder='Username' type='text' value={regUsername} onChange={setRegUsername} />
+                                <Input icon={<PasswordIcon className='text-sm' />} placeholder='Password' type='password' value={regPassword} onChange={setRegPassword} />
+                                <Input icon={<CheckIcon className='text-sm' />} placeholder='Confirm Password' type='password' value={confirmPassword} onChange={setConfirmPassword} />
                                 <button onClick={() => {
                                     hideRegister()
                                     openModal()
