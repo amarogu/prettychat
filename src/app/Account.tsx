@@ -83,7 +83,7 @@ export function Account() {
                             <div className="mt-4">
                                 <button
                                 type="button"
-                                className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                className="inline-flex justify-center rounded-md border border-transparent bg-accent px-4 py-2 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                                 onClick={closeModal}
                                 >
                                 Login
@@ -125,17 +125,18 @@ export function Account() {
                                 as="h3"
                                 className="text-lg font-einaSemi"
                             >
-                                Login
+                                Register
                             </Dialog.Title>
                             <div className="mt-2 flex flex-col gap-3 items-start">
                                 <Input icon={<BadgeIcon />} placeholder='Username' type='text' />
                                 <Input icon={<PasswordIcon />} placeholder='Password' type='password' />
+                                <Input icon={<PasswordIcon />} placeholder='Confirm Password' type='password' />
                             </div>
                             
                             <div className="mt-4">
                                 <button
                                 type="button"
-                                className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                className="inline-flex justify-center rounded-md border border-transparent bg-accent px-4 py-2 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                                 onClick={hideRegister}
                                 >
                                 Register
