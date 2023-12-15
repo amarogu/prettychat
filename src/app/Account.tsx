@@ -1,6 +1,6 @@
 'use client'
 import { useGlobalState } from './GlobalStateContext';
-import { getUser, login } from './Networking/user';
+import { getUser, login, register } from './Networking/user';
 import LoginIcon from '@mui/icons-material/Login';
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
@@ -161,7 +161,21 @@ export function Account() {
                                 <button
                                 type="button"
                                 className="inline-flex justify-center rounded-md border border-transparent bg-accent px-4 py-2 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                onClick={hideRegister}
+                                onClick={async () => {
+                                    hideRegister()
+                                    const res = await register(regUsername, regPassword)
+                                    if (res.message == 'Successfully registered.') {
+                                        const loginRes = await login(regUsername, regPassword)
+                                        if (loginRes.message === 'You are now logged in.') {
+                                            
+                                            const userRes = await getUser()
+                                            setUser(userRes)
+                                            const chatsRes = await getChats()
+                                            setChats(chatsRes)
+                                            setIsLoggedIn(true)
+                                        }
+                                    }
+                                }}
                                 >
                                 Register
                                 </button>

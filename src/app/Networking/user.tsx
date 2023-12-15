@@ -24,3 +24,8 @@ export const logout = async () => {
     const response = await axiosInstance.get('/logout');
     return response.data;
 }
+
+export const register = async (username: String, password: String) => {
+    const response = await axiosInstance.post('/register', {username: username, password: password});
+    return response.data;
+}
