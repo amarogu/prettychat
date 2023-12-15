@@ -1,5 +1,5 @@
 import { useGlobalState } from "../GlobalStateContext";
-import { Chat } from "../GlobalStateContext";
+import { Chat } from "../Classes";
 
 export const getChats = async () => {
     const { axiosInstance } = useGlobalState();
