@@ -2,16 +2,20 @@ import React, { useEffect, useState } from 'react';
 import ChatComponent from "./Chat"
 import { Create } from "@mui/icons-material"
 import { useGlobalState } from "./GlobalStateContext"
-import { getChats } from "./Networking"
+import { getChats, getUser } from "./Networking"
 import { Account } from "./Account"
 import Searchbar from "./Searchbar"
 
 export function Sidebar() {
-    const [chats, setChats] = useState([]); // Add this line
+    const {chats, setChats, user, setUser} = useGlobalState(); // Add this line
 
     useEffect(() => {
         getChats().then(chats => setChats(chats)); // Add this block
     }, []); // Empty dependencies array means this effect runs once on mount and not on updates
+
+    useEffect(() => {
+        getUser().then(user => setUser(user)); // Add this block
+    }, []);
 
     return (
         <section className="max-w-xs flex gap-3 flex-col relative">
