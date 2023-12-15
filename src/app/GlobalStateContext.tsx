@@ -1,3 +1,4 @@
+'use client'
 import axios from 'axios';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
@@ -12,14 +13,20 @@ export class Message {
     }
 }
 export class Chat {
+    _id: String;
     title: String;
     description: String;
-    messages: Array<Message>;
+    messages: Message[]; // Replace Message with the actual type of your messages
+    user: String;
+    __v: Number;
 
-    constructor(title: String, description: String, messages: Array<Message>) {
+    constructor(_id: String, title: String, description: String, messages: Array<Message>, user: String, __v: Number) {
+        this._id = _id
         this.title = title
         this.description = description
         this.messages = messages
+        this.user = user
+        this.__v = __v
     }
 }
 

@@ -1,7 +1,7 @@
+'use client'
 import Image from 'next/image'
 import {Sidebar} from './Sidebar'
-import { GlobalStateProvider } from './GlobalStateContext'
-import { getChats } from './Networking/chat'
+import { GlobalStateProvider, useGlobalState } from './GlobalStateContext'
 
 export default function Home() {
   return (
