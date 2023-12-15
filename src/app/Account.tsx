@@ -8,9 +8,10 @@ import { Input } from './Input';
 import BadgeIcon from '@mui/icons-material/Badge';
 import PasswordIcon from '@mui/icons-material/Password';
 import CheckIcon from '@mui/icons-material/Check';
+import { getChats } from './Networking/chats';
 
 export function Account() {
-    const { user, setUser, isLoggedIn, setIsLoggedIn } = useGlobalState();
+    const { user, setUser, isLoggedIn, setIsLoggedIn, setChats } = useGlobalState();
     //getUser().then((user) => setUser(user));
 
     const [isOpen, setIsOpen] = useState(false)
@@ -100,6 +101,8 @@ export function Account() {
                                         setIsLoggedIn(true)
                                         const userRes = await getUser()
                                         setUser(userRes)
+                                        const chatsRes = await getChats()
+                                        setChats(chatsRes)
                                     }
                                 }}
                                 >

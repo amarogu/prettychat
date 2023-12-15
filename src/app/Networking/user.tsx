@@ -19,3 +19,8 @@ export const login = async (username: String, password: String) => {
     const response = await axiosInstance.post('/login', {username: username, password: password});
     return response.data;
 }
+
+export const logout = async () => {
+    const response = await axiosInstance.get('/logout');
+    return response.data;
+}
