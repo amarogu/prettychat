@@ -1,4 +1,3 @@
-'use client'
 import axios from 'axios';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { Chat, User } from './Classes';
