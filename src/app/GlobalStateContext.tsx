@@ -15,6 +15,8 @@ interface IStateManager {
   axiosInstance: typeof axiosInstance;
   user: User | undefined;
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+  isLoggedIn: boolean;
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // Create a context with the interface
@@ -24,8 +26,9 @@ const GlobalStateContext = createContext<IStateManager | null>(null);
 export function GlobalStateProvider({ children }: { children: ReactNode }) {
   const [chats, setChats] = useState<Chat[]>([]);
   const [user, setUser] = useState<User>();
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   return (
-    <GlobalStateContext.Provider value={{ chats, setChats, axiosInstance, user, setUser }}>
+    <GlobalStateContext.Provider value={{ chats, setChats, axiosInstance, user, setUser, isLoggedIn, setIsLoggedIn }}>
       {children}
     </GlobalStateContext.Provider>
   );
