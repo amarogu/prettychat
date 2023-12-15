@@ -35,13 +35,17 @@ export function Sidebar() {
             </div>
             <Searchbar />
             {
-                chats.map((chat) => <ChatComponent chat={chat} />)
+                isLoggedIn ? chats.map((chat) => <ChatComponent chat={chat} />) : <></>
             }
             <Account />
             <button onClick={() => {
                 logout()
-            }}>
-                <CloseIcon className='text-sm absolute right-0 top-0 m-4' />
+                setIsLoggedIn(false)
+            }} className='absolute flex items-center gap-2 right-0 top-0 m-4'>
+                <p>
+                Logout
+                </p>
+                <CloseIcon className='text-sm' />
             </button>
         </section>
     )
