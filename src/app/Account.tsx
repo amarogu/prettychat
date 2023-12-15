@@ -6,6 +6,7 @@ import { Fragment, useState } from 'react'
 import { Input } from './Input';
 import BadgeIcon from '@mui/icons-material/Badge';
 import PasswordIcon from '@mui/icons-material/Password';
+import CheckIcon from '@mui/icons-material/Check';
 
 export function Account() {
     const { user, setUser, isLoggedIn } = useGlobalState();
@@ -70,8 +71,8 @@ export function Account() {
                                 Login
                             </Dialog.Title>
                             <div className="mt-2 flex flex-col gap-3 items-start">
-                                <Input icon={<BadgeIcon />} placeholder='Username' type='text' />
-                                <Input icon={<PasswordIcon />} placeholder='Password' type='password' />
+                                <Input icon={<BadgeIcon className='text-sm' />} placeholder='Username' type='text' />
+                                <Input icon={<PasswordIcon className='text-sm' />} placeholder='Password' type='password' />
                                 <button onClick={() => {
                                     closeModal()
                                     showRegister()
@@ -128,9 +129,13 @@ export function Account() {
                                 Register
                             </Dialog.Title>
                             <div className="mt-2 flex flex-col gap-3 items-start">
-                                <Input icon={<BadgeIcon />} placeholder='Username' type='text' />
-                                <Input icon={<PasswordIcon />} placeholder='Password' type='password' />
-                                <Input icon={<PasswordIcon />} placeholder='Confirm Password' type='password' />
+                                <Input icon={<BadgeIcon className='text-sm' />} placeholder='Username' type='text' />
+                                <Input icon={<PasswordIcon className='text-sm' />} placeholder='Password' type='password' />
+                                <Input icon={<CheckIcon className='text-sm' />} placeholder='Confirm Password' type='password' />
+                                <button onClick={() => {
+                                    hideRegister()
+                                    openModal()
+                                }}>Already have an account? Go back to login.</button>
                             </div>
                             
                             <div className="mt-4">
