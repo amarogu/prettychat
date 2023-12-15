@@ -8,7 +8,7 @@ import { Account } from "./Account"
 
 export function Sidebar() {
     const { chats, setChats } = useGlobalState();
-    getChats().then((chats) => setChats(chats));
+    //getChats().then((chats) => setChats(chats));
     return (
         <section className="max-w-xs flex gap-3 flex-col relative">
             <div className="flex justify-between items-center">

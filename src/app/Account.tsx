@@ -1,3 +1,4 @@
+'use client'
 import { useGlobalState } from './GlobalStateContext';
 import { getUser, login } from './Networking/user';
 import LoginIcon from '@mui/icons-material/Login';
@@ -9,8 +10,8 @@ import PasswordIcon from '@mui/icons-material/Password';
 import CheckIcon from '@mui/icons-material/Check';
 
 export function Account() {
-    const { user, setUser, isLoggedIn } = useGlobalState();
-    getUser().then((user) => setUser(user));
+    const { user, setUser, isLoggedIn, setIsLoggedIn } = useGlobalState();
+    //getUser().then((user) => setUser(user));
 
     const [isOpen, setIsOpen] = useState(false)
 
@@ -92,8 +93,15 @@ export function Account() {
                                 <button
                                 type="button"
                                 className="inline-flex justify-center rounded-md border border-transparent bg-accent px-4 py-2 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                onClick={() => {
+                                onClick={async () => {
                                     closeModal()
+                                    const res = await login(username, password)
+                                    console.log(res.message)
+                                    if (res.message === 'You are now logged in.') {
+                                        setIsLoggedIn(true)
+                                        const userRes = await getUser()
+                                        console.log(userRes)
+                                    }
                                 }}
                                 >
                                 Login
