@@ -30,7 +30,7 @@ export function GlobalStateProvider({ children }: { children: ReactNode }) {
 }
 
 // Create a custom hook for using the global state
-export function useGlobalState() {
+export function useGlobalChat() {
   const context = useContext(GlobalStateContext);
   if (context === null) {
     throw new Error('useGlobalState must be used within a GlobalStateProvider');

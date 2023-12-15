@@ -1,8 +1,8 @@
-import { useGlobalState } from "../GlobalStateContext";
+import { useGlobalChat } from "../GlobalStateContext";
 import { Chat } from "../Classes";
 
 export const getChats = async () => {
-    const { axiosInstance } = useGlobalState();
+    const { axiosInstance } = useGlobalChat();
     const response = await axiosInstance.get('/chat');
     
     // Map the response data to Chat instances

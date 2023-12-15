@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import {Sidebar} from './Sidebar'
-import { GlobalStateProvider, useGlobalState } from './GlobalStateContext'
+import { GlobalStateProvider } from './GlobalStateContext'
 
 export default function Home() {
   return (

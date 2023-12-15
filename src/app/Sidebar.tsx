@@ -2,11 +2,11 @@ import Image from "next/image"
 import Searchbar from "./Searchbar"
 import ChatComponent from "./Chat"
 import { Create } from "@mui/icons-material"
-import { useGlobalState } from "./GlobalStateContext"
+import { useGlobalChat } from "./GlobalStateContext"
 import { getChats } from "./Networking/chat"
 
 export function Sidebar() {
-    const { chats, setChats } = useGlobalState();
+    const { chats, setChats } = useGlobalChat();
     getChats().then((chats) => setChats(chats));
     return (
         <section className="max-w-xs flex gap-3 flex-col">
