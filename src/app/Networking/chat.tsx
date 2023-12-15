@@ -1,4 +1,7 @@
 import { useGlobalState } from "../GlobalStateContext";
 
-const getChats = async () => {
-    const res = await axios
+export const getChats = async () => {
+    const { axiosInstance } = useGlobalState();
+    const response = await axiosInstance.get('/chat');
+    return response;
+}

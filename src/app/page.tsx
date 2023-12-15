@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import {Sidebar} from './Sidebar'
 import { GlobalStateProvider } from './GlobalStateContext'
+import { getChats } from './Networking/chat'
 
 export default function Home() {
   return (

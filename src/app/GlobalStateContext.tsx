@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 // Classes
@@ -22,10 +23,16 @@ export class Chat {
     }
 }
 
+const axiosInstance = axios.create({
+    baseURL: 'http://localhost:3277/',
+    timeout: 1000,
+});
+
 // Define an interface for your state
 interface IChatState {
   chats: Chat[];
   setChats: React.Dispatch<React.SetStateAction<Chat[]>>;
+  axiosInstance: typeof axiosInstance;
 }
 
 // Create a context with the interface
@@ -36,7 +43,7 @@ export function GlobalStateProvider({ children }: { children: ReactNode }) {
   const [chats, setChats] = useState<Chat[]>([]);
 
   return (
-    <GlobalStateContext.Provider value={{ chats, setChats }}>
+    <GlobalStateContext.Provider value={{ chats, setChats, axiosInstance }}>
       {children}
     </GlobalStateContext.Provider>
   );
