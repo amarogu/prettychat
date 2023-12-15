@@ -8,3 +8,8 @@ export const getUser = async () => {
     const user = response.data.map((userData: User) => new User(userData._id, userData.username));
     return user;
 }
+
+export const login = async (username: String, password: String) => {
+    const {axiosInstance} = useGlobalState();
+    const response = await axiosInstance.post('/login', {username: username, password: password});
+}
