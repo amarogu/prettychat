@@ -26,7 +26,7 @@ export function Sidebar() {
             </div>
             <Searchbar />
             {
-                chats.map((chat) => <ChatComponent />)
+                chats.map((chat) => <ChatComponent chat={chat} />)
             }
             <Account />
         </section>

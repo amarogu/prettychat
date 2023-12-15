@@ -1,15 +1,19 @@
 import { useGlobalState } from "./GlobalStateContext"
+import { Chat as ChatClass } from "./Classes"
 
-export default function Chat() {
-    const {chats, setChats} = useGlobalState();
+interface ChatProps {
+    chat: ChatClass
+}
+
+export default function Chat({ chat }: ChatProps) {
 
     return (
         <div className="flex flex-col gap-2 bg-gray py-3 px-5 rounded">
             <h2>
-                Title
+                {chat.title}
             </h2>
             <p className="text-body-dark">
-                Message
+                {chat.description}
             </p>
         </div>
     )
