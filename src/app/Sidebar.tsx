@@ -3,7 +3,7 @@ import Searchbar from "./Searchbar"
 import ChatComponent from "./Chat"
 import { Create } from "@mui/icons-material"
 
-class Message {
+export class Message {
     origin: String;
     content: String;
 
@@ -12,7 +12,7 @@ class Message {
         this.content = content
     }
 }
-class Chat {
+export class Chat {
     title: String;
     description: String;
     messages: Array<Message>;
@@ -24,7 +24,7 @@ class Chat {
     }
 }
 
-export default function Sidebar() {
+export function Sidebar() {
     return (
         <section className="max-w-xs flex gap-3 flex-col">
             <div className="flex justify-between items-center">
