@@ -1,6 +1,6 @@
 'use client'
 import { useGlobalState } from './GlobalStateContext';
-import { getUser, login } from './Networking';
+import { getUser, login } from './Networking/user';
 import LoginIcon from '@mui/icons-material/Login';
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'

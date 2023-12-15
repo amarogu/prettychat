@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import ChatComponent from "./Chat"
 import { Create } from "@mui/icons-material"
 import { useGlobalState } from "./GlobalStateContext"
-import { getChats, getUser } from "./Networking"
+import { getUser } from "./Networking/user"
+import { getChats } from "./Networking/chats"
 import { Account } from "./Account"
 import Searchbar from "./Searchbar"
 
