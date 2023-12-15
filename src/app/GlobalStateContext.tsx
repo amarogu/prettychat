@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 });
 
 // Define an interface for your state
-interface IChatState {
+interface IStateManager {
   chats: Chat[];
   setChats: React.Dispatch<React.SetStateAction<Chat[]>>;
   axiosInstance: typeof axiosInstance;
@@ -18,7 +18,7 @@ interface IChatState {
 }
 
 // Create a context with the interface
-const GlobalStateContext = createContext<IChatState | null>(null);
+const GlobalStateContext = createContext<IStateManager | null>(null);
 
 // Create a provider component
 export function GlobalStateProvider({ children }: { children: ReactNode }) {
