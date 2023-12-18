@@ -9,6 +9,7 @@ import BadgeIcon from '@mui/icons-material/Badge';
 import PasswordIcon from '@mui/icons-material/Password';
 import CheckIcon from '@mui/icons-material/Check';
 import { getChats } from './Networking/chats';
+import Alert from './Alert';
 
 export function Account() {
     const { user, setUser, isLoggedIn, setIsLoggedIn, setChats } = useGlobalState();
@@ -17,6 +18,16 @@ export function Account() {
     const [isOpen, setIsOpen] = useState(false)
 
     const [isRegistering, setIsRegistering] = useState(false)
+
+    const [match, setMatch] = useState(false)
+
+    function openMatch() {
+        setMatch(true)
+    }
+
+    function closeMatch() {
+        setMatch(false)
+    }
 
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
@@ -162,18 +173,22 @@ export function Account() {
                                 type="button"
                                 className="inline-flex justify-center rounded-md border border-transparent bg-accent px-4 py-2 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                                 onClick={async () => {
-                                    hideRegister()
-                                    const res = await register(regUsername, regPassword)
-                                    if (res.message == 'Successfully registered.') {
-                                        const loginRes = await login(regUsername, regPassword)
-                                        if (loginRes.message === 'You are now logged in.') {
-                                            
-                                            const userRes = await getUser()
-                                            setUser(userRes)
-                                            const chatsRes = await getChats()
-                                            setChats(chatsRes)
-                                            setIsLoggedIn(true)
+                                    if (regPassword == confirmPassword) {
+                                        const res = await register(regUsername, regPassword)
+                                        if (res.message == 'Successfully registered.') {
+                                            const loginRes = await login(regUsername, regPassword)
+                                            if (loginRes.message === 'You are now logged in.') {
+                                                
+                                                const userRes = await getUser()
+                                                setUser(userRes)
+                                                const chatsRes = await getChats()
+                                                setChats(chatsRes)
+                                                setIsLoggedIn(true)
+                                                hideRegister()
+                                            }
                                         }
+                                    } else {
+                                        openMatch()
                                     }
                                 }}
                                 >
@@ -186,6 +201,14 @@ export function Account() {
                     </div>
                 </Dialog>
             </Transition>
+            <Alert
+                isOpen={match}
+                closeModal={closeMatch}
+                title='Passwords do not match'
+                content='Please make sure your passwords match.'
+                buttonText='Okay'
+                buttonFunction={closeMatch}
+            />
         </div>
     )
 }
