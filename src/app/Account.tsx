@@ -29,6 +29,16 @@ export function Account() {
         setMatch(false)
     }
 
+    const [isEmpty, setIsEmpty] = useState(false)
+
+    function openEmpty() {
+        setIsEmpty(true)
+    }
+
+    function closeEmpty() {
+        setIsEmpty(false)
+    }
+
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
 
@@ -173,7 +183,7 @@ export function Account() {
                                 type="button"
                                 className="inline-flex justify-center rounded-md border border-transparent bg-accent px-4 py-2 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                                 onClick={async () => {
-                                    if (regPassword == confirmPassword) {
+                                    if (regPassword === confirmPassword && regPassword.length > 0) {
                                         const res = await register(regUsername, regPassword)
                                         if (res.message == 'Successfully registered.') {
                                             const loginRes = await login(regUsername, regPassword)
@@ -187,6 +197,8 @@ export function Account() {
                                                 hideRegister()
                                             }
                                         }
+                                    } else if (regUsername.length === 0 || regPassword.length === 0 || confirmPassword.length === 0) {
+                                        openEmpty()
                                     } else {
                                         openMatch()
                                     }
@@ -207,7 +219,21 @@ export function Account() {
                 title='Passwords do not match'
                 content='Please make sure your passwords match.'
                 buttonText='Okay'
-                buttonFunction={closeMatch}
+                buttonFunction={() => {
+                    closeMatch()
+                    showRegister()
+                }}
+            />
+            <Alert
+                isOpen={isEmpty}
+                closeModal={closeEmpty}
+                title='Empty Fields'
+                content='Please make sure all fields are filled.'
+                buttonText='Okay'
+                buttonFunction={() => {
+                    closeEmpty()
+                    showRegister()
+                }}
             />
         </div>
     )
