@@ -143,7 +143,7 @@ export function Account() {
                                 onClick={async () => {
                                     closeModal()
                                     const res = await login(username, password)
-                                    if (res.status === 200) {
+                                    if (res.data == 'You are now logged in.') {
                                         setIsLoggedIn(true)
                                         const userRes = await getUser()
                                         setUser(userRes)
@@ -217,9 +217,9 @@ export function Account() {
                                 onClick={async () => {
                                     if (regPassword === confirmPassword && regPassword.length > 0) {
                                         const res = await register(regUsername, regPassword)
-                                        if (res.status == 200) {
+                                        if (res.data === 'Successfully registered.') {
                                             const loginRes = await login(regUsername, regPassword)
-                                            if (loginRes.status === 200) {
+                                            if (loginRes.data === 'You are now logged in.') {
                                                 const userRes = await getUser()
                                                 setUser(userRes)
                                                 const chatsRes = await getChats()
