@@ -9,15 +9,13 @@ const axiosInstance = axios.create({
 
 export const getUser = async () => {
     const response = await axiosInstance.get('/user');
-    // Map the response data to User instances
     const user = new User(response.data._id, response.data.username);
-    console.log(response)
     return user;
 }
 
 export const login = async (username: String, password: String) => {
-    const response = await axiosInstance.post('/login', {username: username, password: password});
-    return {data: response.data, status: response.status};
+    const response = await axiosInstance.post('/login', { username: username, password: password });
+    return { data: response.data, status: response.status };
 }
 
 export const logout = async () => {
@@ -26,6 +24,6 @@ export const logout = async () => {
 }
 
 export const register = async (username: String, password: String) => {
-    const response = await axiosInstance.post('/register', {username: username, password: password});
-    return {data: response.data, status: response.status};
+    const response = await axiosInstance.post('/register', { username: username, password: password });
+    return { data: response.data, status: response.status };
 }
