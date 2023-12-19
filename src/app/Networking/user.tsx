@@ -17,7 +17,7 @@ export const getUser = async () => {
 
 export const login = async (username: String, password: String) => {
     const response = await axiosInstance.post('/login', {username: username, password: password});
-    return response.data;
+    return {data: response.data, status: response.status};
 }
 
 export const logout = async () => {
@@ -27,5 +27,5 @@ export const logout = async () => {
 
 export const register = async (username: String, password: String) => {
     const response = await axiosInstance.post('/register', {username: username, password: password});
-    return response.data;
+    return {data: response.data, status: response.status};
 }

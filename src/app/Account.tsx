@@ -62,6 +62,31 @@ export function Account() {
         setIsRegistering(false)
     }
 
+    const [successfulLogin, setSuccessfulLogin] = useState(false)
+
+    function openSuccessfulLogin() {
+        setSuccessfulLogin(true)
+    }
+
+    function closeSuccessfulLogin() {
+        setSuccessfulLogin(false)
+    }
+
+    const [statusModal, setStatusModal] = useState(false)
+
+    function openStatusModal() {
+        setStatusModal(true)
+    }
+
+    function closeStatusModal() {
+        setStatusModal(false)
+    }
+
+    let title = 'Status'
+    let content = 'You are not logged in.'
+    let buttonText = 'Okay'
+    let buttonFunction = closeStatusModal
+
     return (
         <div className="p-4 bg-gray rounded">
             <button className='flex w-full justify-between items-center' onClick={openModal}>
@@ -118,12 +143,19 @@ export function Account() {
                                 onClick={async () => {
                                     closeModal()
                                     const res = await login(username, password)
-                                    if (res.message === 'You are now logged in.') {
+                                    if (res.status === 200) {
                                         setIsLoggedIn(true)
                                         const userRes = await getUser()
                                         setUser(userRes)
                                         const chatsRes = await getChats()
                                         setChats(chatsRes)
+                                        openSuccessfulLogin()
+                                    } else {
+                                        title = 'Error'
+                                        console.log(2626536)
+                                        content = 'Incorrect username or password.'
+                                        buttonText = 'Okay'
+                                        openStatusModal()
                                     }
                                 }}
                                 >
@@ -185,10 +217,9 @@ export function Account() {
                                 onClick={async () => {
                                     if (regPassword === confirmPassword && regPassword.length > 0) {
                                         const res = await register(regUsername, regPassword)
-                                        if (res.message == 'Successfully registered.') {
+                                        if (res.status == 200) {
                                             const loginRes = await login(regUsername, regPassword)
-                                            if (loginRes.message === 'You are now logged in.') {
-                                                
+                                            if (loginRes.status === 200) {
                                                 const userRes = await getUser()
                                                 setUser(userRes)
                                                 const chatsRes = await getChats()
@@ -234,6 +265,22 @@ export function Account() {
                     closeEmpty()
                     showRegister()
                 }}
+            />
+            <Alert
+                isOpen={successfulLogin}
+                closeModal={closeSuccessfulLogin}
+                title='Successfully Logged In'
+                content='You have successfully logged in.'
+                buttonText='Okay'
+                buttonFunction={closeSuccessfulLogin}
+            />
+            <Alert
+                isOpen={statusModal}
+                closeModal={closeStatusModal}
+                title={title}
+                content={content}
+                buttonText={buttonText}
+                buttonFunction={buttonFunction}
             />
         </div>
     )
