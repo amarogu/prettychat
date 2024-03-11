@@ -74,7 +74,10 @@ export function Account() {
 
     const [statusModal, setStatusModal] = useState(false)
 
-    function openStatusModal() {
+    function openStatusModal(title: string, content: string, buttonText: string) {
+        setTitle(title)
+        setContent(content)
+        setButtonText(buttonText)
         setStatusModal(true)
     }
 
@@ -82,9 +85,9 @@ export function Account() {
         setStatusModal(false)
     }
 
-    let title = 'Status'
-    let content = 'You are not logged in.'
-    let buttonText = 'Okay'
+    const [title, setTitle] = useState('Status');
+    const [content, setContent] = useState('You are not logged in.');
+    const [buttonText, setButtonText] = useState('Okay');
     let buttonFunction = closeStatusModal
 
     return (
@@ -141,21 +144,23 @@ export function Account() {
                                 type="button"
                                 className="inline-flex justify-center rounded-md border border-transparent bg-accent px-4 py-2 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                                 onClick={async () => {
-                                    closeModal()
-                                    const res = await login(username, password)
-                                    if (res.data == 'You are now logged in.') {
-                                        setIsLoggedIn(true)
-                                        const userRes = await getUser()
-                                        setUser(userRes)
-                                        const chatsRes = await getChats()
-                                        setChats(chatsRes)
-                                        openSuccessfulLogin()
+                                    if (username.length > 0 && password.length > 0) {
+                                        const res = await login(username, password)
+                                        if (res.data === 'You are now logged in.') {
+                                            const userRes = await getUser()
+                                            setUser(userRes)
+                                            const chatsRes = await getChats()
+                                            setChats(chatsRes)
+                                            setIsLoggedIn(true)
+                                            openSuccessfulLogin()
+                                        } else {
+                                            openStatusModal('Error', 'Incorrect username or password.', 'Okay')
+                                        }
+                                    } else if (password.length < 8 ) {
+                                        openStatusModal('Error', 'Password must be at least 8 characters long.', 'Okay')
+                                        
                                     } else {
-                                        title = 'Error'
-                                        console.log(2626536)
-                                        content = 'Incorrect username or password.'
-                                        buttonText = 'Okay'
-                                        openStatusModal()
+                                        openStatusModal('Error', 'Please make sure all fields are filled.', 'Okay')
                                     }
                                 }}
                                 >
