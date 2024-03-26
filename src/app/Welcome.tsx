@@ -41,18 +41,12 @@ export default function Welcome({title, message, type, input, btn}: PopupProps) 
                 {render()}
                 <Btn onClick={async () => {
                     const value = (document.getElementById(input ?? '') as HTMLInputElement).value;
-                    axios.get(`${value}${value.endsWith('/') ? '' : '/'}check-status`).then(res => {
-                        const data = res.data as Res;
-                        if (data.status) {
-                            setServerStatus('Server is up and running');
-                            setTimeout(() => {
-                                router.push('/dashboard');
-                            }, 1000);
-                        } else {
-                            setServerStatus('Server is down');
-                        }
-                    }
-                    ).catch(err => {
+                    axios.get(`${value}${value.endsWith('/') ? '' : '/'}check-status`).then(() => {
+                        setServerStatus('Server is up and running');
+                        setTimeout(() => {
+                            router.push(`/dashboard?input=${value}`);
+                        }, 1000);
+                    }).catch(() => {
                         setServerStatus('Server not found');
                     });
                 }} content={btn ?? ''} />
