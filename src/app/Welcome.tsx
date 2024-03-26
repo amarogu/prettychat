@@ -12,12 +12,8 @@ interface PopupProps {
     btn?: string;
 }
 
-function checkServerStatus(value: string): Promise<string> {
-    return axios.get(`${value}${value.endsWith('/') ? '' : '/'}check-status`, {}).then(() => {
-      return 'Server is up and running';
-    }).catch(err => {
-      return 'Server is down';
-    });
+interface Res {
+    status: boolean;
 }
 
 export default function Welcome({title, message, type, input, btn}: PopupProps) {
@@ -44,14 +40,21 @@ export default function Welcome({title, message, type, input, btn}: PopupProps) 
                 <p>{message}</p>
                 {render()}
                 <Btn onClick={async () => {
-                    const status = await checkServerStatus((document.getElementById(input ?? '') as HTMLInputElement).value);
-                    setServerStatus(status);
-                    if (status === 'Server is up and running') {
-                        // Redirect to the next page
-                        setTimeout(() => {
-                            router.push('/dashboard');
-                        }, 1000);
+                    const value = (document.getElementById(input ?? '') as HTMLInputElement).value;
+                    axios.get(`${value}${value.endsWith('/') ? '' : '/'}check-status`).then(res => {
+                        const data = res.data as Res;
+                        if (data.status) {
+                            setServerStatus('Server is up and running');
+                            setTimeout(() => {
+                                router.push('/dashboard');
+                            }, 1000);
+                        } else {
+                            setServerStatus('Server is down');
+                        }
                     }
+                    ).catch(err => {
+                        setServerStatus('Server not found');
+                    });
                 }} content={btn ?? ''} />
                 <p>{serverStatus}</p>
                 {
