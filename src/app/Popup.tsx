@@ -1,5 +1,7 @@
 'use client';
+import { useState } from 'react';
 import Btn from "./Btn";
+import axios from "axios";
 
 interface PopupProps {
     title: string;
@@ -7,10 +9,18 @@ interface PopupProps {
     type: string;
     input?: string;
     btn?: string;
-    action?: (a: any) => Promise<void>;
 }
 
-export default function Popup({title, message, type, input, btn, action}: PopupProps) {
+function checkServerStatus(value: string): Promise<string> {
+    return axios.get(`${value}${value.endsWith('/') ? '' : '/'}check-status`, {}).then(() => {
+      return 'Server is up and running';
+    }).catch(err => {
+      return 'Server is down';
+    });
+}
+
+export default function Popup({title, message, type, input, btn}: PopupProps) {
+    const [serverStatus, setServerStatus] = useState<string>('');
 
     const render = () => {
         switch (type) {
@@ -31,10 +41,11 @@ export default function Popup({title, message, type, input, btn, action}: PopupP
                 <p className="text-lg font-bold">{title}</p>
                 <p>{message}</p>
                 {render()}
-                <Btn onClick={() => {
-                    
+                <Btn onClick={async () => {
+                    const status = await checkServerStatus((document.getElementById(input ?? '') as HTMLInputElement).value);
+                    setServerStatus(status);
                 }} content={btn ?? ''} />
-                <p>{}</p>
+                <p>{serverStatus}</p>
             </div>
         </div>
     )
