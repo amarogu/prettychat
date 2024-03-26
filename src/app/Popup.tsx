@@ -1,3 +1,4 @@
+'use client';
 import Btn from "./Btn";
 
 interface PopupProps {
@@ -6,14 +7,15 @@ interface PopupProps {
     type: string;
     input?: string;
     btn?: string;
+    action?: (a: any) => Promise<void>;
 }
 
-export default function Popup({title, message, type, input, btn}: PopupProps) {
+export default function Popup({title, message, type, input, btn, action}: PopupProps) {
 
     const render = () => {
         switch (type) {
             case 'input':
-                return <input placeholder={input} className="rounded-sm focus:outline outline-offset-2 placeholder-body-dark outline-background bg-background p-2" />
+                return <input id={input} placeholder={input} className="rounded-sm focus:outline outline-offset-2 placeholder-body-dark outline-background bg-background p-2" />
                 break;
             case 'button':
                 return <button className="p-2 border border-gray rounded-sm">Continue</button>
@@ -29,7 +31,10 @@ export default function Popup({title, message, type, input, btn}: PopupProps) {
                 <p className="text-lg font-bold">{title}</p>
                 <p>{message}</p>
                 {render()}
-                <Btn content={btn ?? ''} />
+                <Btn onClick={() => {
+                    
+                }} content={btn ?? ''} />
+                <p>{}</p>
             </div>
         </div>
     )
