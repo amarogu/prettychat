@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Btn from "./Btn";
 import axios from "axios";
+import { useRouter } from 'next/navigation';
 
 interface PopupProps {
     title: string;
@@ -19,7 +20,8 @@ function checkServerStatus(value: string): Promise<string> {
     });
 }
 
-export default function Popup({title, message, type, input, btn}: PopupProps) {
+export default function Welcome({title, message, type, input, btn}: PopupProps) {
+    const router = useRouter();
     const [serverStatus, setServerStatus] = useState<string>('');
 
     const render = () => {
@@ -44,8 +46,22 @@ export default function Popup({title, message, type, input, btn}: PopupProps) {
                 <Btn onClick={async () => {
                     const status = await checkServerStatus((document.getElementById(input ?? '') as HTMLInputElement).value);
                     setServerStatus(status);
+                    if (status === 'Server is up and running') {
+                        // Redirect to the next page
+                        setTimeout(() => {
+                            router.push('/dashboard');
+                        }, 1000);
+                    }
                 }} content={btn ?? ''} />
                 <p>{serverStatus}</p>
+                {
+                    serverStatus === 'Server is up and running' ? 
+                        <div className='flex items-center gap-2'>
+                            <p className="text-sm">Redirecting</p>
+                            <div className="animate-pulse w-2 h-2 bg-body-dark-emphasized rounded-full"></div>
+                        </div>
+                    : ''
+                }
             </div>
         </div>
     )
