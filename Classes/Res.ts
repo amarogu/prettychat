@@ -1,10 +1,12 @@
 class Res {
-    status: number;
-    msg: string;
+    status?: number;
+    message: string;
 
-    constructor(status: number, msg: string) {
-        this.status = status;
-        this.msg = msg;
+    constructor(message: string, status?: number) {
+        if (status) {
+            this.status = status;
+        }
+        this.message = message;
     }
 }
 

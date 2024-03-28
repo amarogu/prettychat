@@ -14,18 +14,18 @@ export default function App() {
     const handleContinue = async () => {
         const apiKeyInput = document.getElementById('api-key') as HTMLInputElement;
         if (apiKeyInput.value === '') {
-            return new Res(0, 'Please insert your API key.');
+            return new Res('Please insert your API key.', 0);
         } else {
             try {
                 const res = await axios.post('/api/key', {key: apiKeyInput.value});
-                return new Res(res.status, res.data.message);
+                return new Res(res.data.message, res.status);
             } catch(err: any) {
-                return new Res(err.response.status, err.response.data.message);
+                return new Res(err.response.data.message, err.response.status);
             }
         }
     }
 
-    const [res, setRes] = useState<Res>({status: 0, msg: ''});
+    const [res, setRes] = useState<Res>({message: '', status: 0});
 
     return (
         <main className="h-screen flex items-center justify-center p-8">
@@ -41,7 +41,7 @@ export default function App() {
                         }, 1500);
                     }
                 }} content="Continue" />
-                <p>{res.msg}</p>
+                <p>{res.message}</p>
             </Popup>
         </main>
     )

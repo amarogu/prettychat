@@ -12,7 +12,9 @@ export async function POST(req: NextRequest) {
         return Response.json({message: 'The API key was successfully registered.'});
     } catch(err: any) {
         if (err.code as number === 11000) {
-            return new Response(new Blob([JSON.stringify({message: 'You have already registered this API key'})], {type: 'application/json'}), {status: 500});
+            return Response.json({message: 'This API key is already registered.'});
+        } else {
+            return new Response(new Blob([JSON.stringify({message: 'An error occurred'})], {type: 'application/json'}), {status: 500});
         }
     }
 }

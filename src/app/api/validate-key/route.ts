@@ -14,6 +14,6 @@ export async function POST(req: NextRequest) {
             return Response.json({message: 'no match found'});
         }
     } catch {
-        return Response.json({message: 'An error occurred.'});
+        return new Response(new Blob([JSON.stringify({message: 'An error occurred'})], {type: 'application/json'}), {status: 400});
     }
 }

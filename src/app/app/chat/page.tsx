@@ -1,14 +1,15 @@
-'use client';
-import { useSearchParams } from "next/navigation";
+import Res from "../../../../Classes/Res";
+import axiosInstance from "../../../../axiosInstance";
 
-export default function Chat() {
+export default async function Chat({searchParams}: {searchParams: {key: string}}) {
 
-    const searchParams = useSearchParams();
-    const key = searchParams.get("key");
+    const key = searchParams.key;
+    const res = await axiosInstance.post('/validate-key', {key: key});
+    const data: Res = res.data;
 
     return (
         <>
-            {key}
+            {data.message}
         </>
     )
 }
