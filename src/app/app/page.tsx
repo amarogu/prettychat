@@ -5,11 +5,13 @@ import Popup from "../Popup";
 import axios from "axios";
 import Res from "../../../Classes/Res";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function App() {
 
+    const router = useRouter();
+
     const handleContinue = async () => {
-        // Continue to the next page
         const apiKeyInput = document.getElementById('api-key') as HTMLInputElement;
         if (apiKeyInput.value === '') {
             return new Res(0, 'Please insert your API key.');
@@ -29,7 +31,10 @@ export default function App() {
         <main className="h-screen flex items-center justify-center p-8">
             <Popup title="Great, you are in!" message="Remember. everything here is self-hosted, so you're fine inserting your API key.">
                 <Input id="api-key" placeholder="API Key" />
-                <Btn onClick={async () => {setRes(await handleContinue())}} content="Continue" />
+                <Btn onClick={async () => {setRes(await handleContinue()); setTimeout(() => {
+                    const input = document.getElementById('api-key') as HTMLInputElement;
+                    router.push(`/app/chat?key=${input.value}`,);
+                }, 1500);}} content="Continue" />
                 <p>{res.msg}</p>
             </Popup>
         </main>
