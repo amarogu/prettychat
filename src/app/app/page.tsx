@@ -11,11 +11,15 @@ export default function App() {
     const handleContinue = async () => {
         // Continue to the next page
         const apiKeyInput = document.getElementById('api-key') as HTMLInputElement;
-        try {
-            const res = await axios.post('/api/key', {key: apiKeyInput.value});
-            return new Res(res.status, res.data.message);
-        } catch(err: any) {
-            return new Res(err.response.status, err.response.data.message);
+        if (apiKeyInput.value === '') {
+            return new Res(0, 'Please insert your API key.');
+        } else {
+            try {
+                const res = await axios.post('/api/key', {key: apiKeyInput.value});
+                return new Res(res.status, res.data.message);
+            } catch(err: any) {
+                return new Res(err.response.status, err.response.data.message);
+            }
         }
     }
 
