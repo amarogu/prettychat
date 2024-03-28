@@ -31,10 +31,16 @@ export default function App() {
         <main className="h-screen flex items-center justify-center p-8">
             <Popup title="Great, you are in!" message="Remember. everything here is self-hosted, so you're fine inserting your API key.">
                 <Input id="api-key" placeholder="API Key" />
-                <Btn onClick={async () => {setRes(await handleContinue()); setTimeout(() => {
-                    const input = document.getElementById('api-key') as HTMLInputElement;
-                    router.push(`/app/chat?key=${input.value}`,);
-                }, 1500);}} content="Continue" />
+                <Btn onClick={async () => {
+                    const response = await handleContinue();
+                    setRes(response);
+                    if (response.status === 200) {
+                        setTimeout(() => {
+                            const input = document.getElementById('api-key') as HTMLInputElement;
+                            router.push(`/app/chat?key=${input.value}`,);
+                        }, 1500);
+                    }
+                }} content="Continue" />
                 <p>{res.msg}</p>
             </Popup>
         </main>
