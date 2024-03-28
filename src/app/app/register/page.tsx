@@ -13,11 +13,12 @@ export default function App() {
 
     const handleContinue = async () => {
         const apiKeyInput = document.getElementById('api-key') as HTMLInputElement;
-        if (apiKeyInput.value === '') {
-            return new Res('Please insert your API key.', 0);
+        const apiKeyNameInput = document.getElementById('api-key-name') as HTMLInputElement;
+        if (apiKeyInput.value === '' || apiKeyNameInput.value === '') {
+            return new Res('Please fill out all the fields.', 0);
         } else {
             try {
-                const res = await axios.post('/api/key', {key: apiKeyInput.value});
+                const res = await axios.post('/api/key', {name: apiKeyNameInput.value, key: apiKeyInput.value});
                 return new Res(res.data.message, res.status);
             } catch(err: any) {
                 return new Res(err.response.data.message, err.response.status);
@@ -29,9 +30,9 @@ export default function App() {
 
     return (
         <main className="h-screen flex items-center justify-center p-8">
-            <Popup title="Great, you are in!" message="Remember. everything here is self-hosted, so you're fine inserting your API key.">
-                <Input id="api-key-name" placeholder="API Key Name" />
+            <Popup title="Register" message="Remember. Everything here is self-hosted, so you're fine inserting your API key.">
                 <Input id="api-key" placeholder="API Key" />
+                <Input id="api-key-name" placeholder="API Key Name" />
                 <Btn onClick={async () => {
                     const response = await handleContinue();
                     setRes(response);

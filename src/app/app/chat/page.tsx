@@ -20,7 +20,7 @@ export default async function Chat({searchParams}: {searchParams: {key: string}}
             <main className="flex h-screen items-center justify-center">
                 <Popup title="401 Unauthorized" message="Unregistered API key">
                     <p>Please register an API key before trying to access this page.</p>
-                    <Btn content="Go back" href='/app' />
+                    <Btn content="Go back" href='/' />
                 </Popup>
             </main>
         )
