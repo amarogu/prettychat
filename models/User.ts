@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+if (mongoose.models.User) {
+    mongoose.deleteModel('User');
+}
 
 const userSchema = new mongoose.Schema({
     apiKey: {
