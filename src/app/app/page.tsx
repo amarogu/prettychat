@@ -34,7 +34,7 @@ export default function App() {
                 <Btn onClick={async () => {
                     const response = await handleContinue();
                     setRes(response);
-                    if (response.status === 200) {
+                    if (response.message === 'The API key was successfully registered.') {
                         setTimeout(() => {
                             const input = document.getElementById('api-key') as HTMLInputElement;
                             router.push(`/app/chat?key=${input.value}`,);
