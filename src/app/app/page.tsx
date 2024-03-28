@@ -4,6 +4,7 @@ import Input from "../Input";
 import Popup from "../Popup";
 import axios from "axios";
 import Error from "../../../Interfaces/Error";
+import Res from "../../../Interfaces/Res";
 
 export default function App() {
 
@@ -12,10 +13,9 @@ export default function App() {
         const apiKeyInput = document.getElementById('api-key') as HTMLInputElement;
         try {
             const res = await axios.post('/api/key', {key: apiKeyInput.value});
-            console.log(res.data);
+            return {status: res.status, msg: (res.data as Res).message};
         } catch(err: any) {
-            const data = err.response.data as Error;
-            console.log(data.message);
+            return {status: err.response.status, msg: (err.response.data as Error).message};
         }
     }
 
