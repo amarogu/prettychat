@@ -1,9 +1,9 @@
 'use client';
-import Btn from "../Btn";
-import Input from "../Input";
-import Popup from "../Popup";
+import Btn from "../../Btn";
+import Input from "../../Input";
+import Popup from "../../Popup";
 import axios from "axios";
-import Res from "../../../Classes/Res";
+import Res from "../../../../Classes/Res";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -30,6 +30,7 @@ export default function App() {
     return (
         <main className="h-screen flex items-center justify-center p-8">
             <Popup title="Great, you are in!" message="Remember. everything here is self-hosted, so you're fine inserting your API key.">
+                <Input id="api-key-name" placeholder="API Key Name" />
                 <Input id="api-key" placeholder="API Key" />
                 <Btn onClick={async () => {
                     const response = await handleContinue();
