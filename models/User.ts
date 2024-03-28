@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema({
     apiKey: {
         type: String,
         required: true,
+        unique: true,
     }
 })
 

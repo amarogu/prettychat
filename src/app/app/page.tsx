@@ -1,13 +1,24 @@
+'use client';
 import Btn from "../Btn";
 import Input from "../Input";
 import Popup from "../Popup";
+import axios from "axios";
 
 export default function App() {
+
+    const handleContinue = async () => {
+        // Continue to the next page
+        const apiKeyInput = document.getElementById('api-key') as HTMLInputElement;
+        const res = await axios.post('/api/key', {key: apiKeyInput.value});
+        console.log(res.data);
+        return res.data;
+    }
+
     return (
         <main className="h-screen flex items-center justify-center p-8">
             <Popup title="Great, you are in!" message="Remember. everything here is self-hosted, so you're fine inserting your API key.">
-                <Input placeholder="API Key" />
-                <Btn content="Continue" />
+                <Input id="api-key" placeholder="API Key" />
+                <Btn onClick={handleContinue} content="Continue" />
             </Popup>
         </main>
     )
