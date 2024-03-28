@@ -3,15 +3,20 @@ import Btn from "../Btn";
 import Input from "../Input";
 import Popup from "../Popup";
 import axios from "axios";
+import Error from "../../../Interfaces/Error";
 
 export default function App() {
 
     const handleContinue = async () => {
         // Continue to the next page
         const apiKeyInput = document.getElementById('api-key') as HTMLInputElement;
-        const res = await axios.post('/api/key', {key: apiKeyInput.value});
-        console.log(res.data);
-        return res.data;
+        try {
+            const res = await axios.post('/api/key', {key: apiKeyInput.value});
+            console.log(res.data);
+        } catch(err: any) {
+            const data = err.response.data as Error;
+            console.log(data.message);
+        }
     }
 
     return (
