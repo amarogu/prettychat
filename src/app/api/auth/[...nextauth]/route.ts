@@ -11,12 +11,12 @@ const authOptions: AuthOptions = {
         CredentialsProvider({
             name: 'credentials',
             credentials: {},
-            async authorize(credentials, req) {
-                const {name, password} = credentials as {name: string, password: string};
+            async authorize(credentials, req): Promise<any> {
+                const { name, password } = credentials as { name: string, password: string };
                 try {
                     await connectDb();
-                    const user = await User.findOne({name});
-                    if(!user) {
+                    const user = await User.findOne({ name });
+                    if (!user) {
                         return null;
                     }
                     const passwordsMatch = await bcrypt.compare(password, user.password);
@@ -24,7 +24,7 @@ const authOptions: AuthOptions = {
                         return null;
                     }
                     return user;
-                } catch(err) {
+                } catch (err) {
                     console.log(err);
                     return null;
                 }
