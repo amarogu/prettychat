@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 if (mongoose.models.User) {
     mongoose.deleteModel('User');
 }
@@ -40,4 +40,4 @@ userSchema.pre('save', function(this: any, next: any) {
 });
 
 const User = mongoose.model('User', userSchema);
-module.exports = User;
+export default User;
