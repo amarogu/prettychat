@@ -32,19 +32,22 @@ export default function App() {
     return (
         <main className="h-screen flex items-center justify-center p-8">
             <Popup title="Register" message="Remember. Everything here is self-hosted, so you're fine inserting your API key.">
-                <Input id="api-key" placeholder="API Key" />
-                <Input id="api-key-name" placeholder="API Key Name" />
-                <Input type="password" id="password" placeholder="Password" />
-                <Btn onClick={async () => {
-                    const response = await handleContinue();
-                    setRes(response);
-                    if (response.message === 'The API key was successfully registered.') {
-                        setTimeout(() => {
-                            const input = document.getElementById('api-key') as HTMLInputElement;
-                            router.push(`/app/chat?key=${input.value}`,);
-                        }, 1500);
-                    }
-                }} content="Continue" />
+                <form className="flex flex-col gap-4">
+                    <Input id="api-key" placeholder="API Key" />
+                    <Input id="api-key-name" placeholder="API Key Name" />
+                    <Input type="password" id="password" placeholder="Password" />
+                    <Btn onClick={async (e) => {
+                        e.preventDefault();
+                        const response = await handleContinue();
+                        setRes(response);
+                        if (response.message === 'The API key was successfully registered.') {
+                            setTimeout(() => {
+                                const input = document.getElementById('api-key') as HTMLInputElement;
+                                router.push(`/app/chat?key=${input.value}`,);
+                            }, 1500);
+                        }
+                    }} content="Continue" />
+                </form>
                 <p>{res.message}</p>
             </Popup>
         </main>

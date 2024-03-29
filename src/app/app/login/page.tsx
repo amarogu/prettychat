@@ -21,11 +21,13 @@ export default function App() {
     return (
         <main className="h-screen flex items-center justify-center p-8">
             <Popup title="Login 🚪" message="To login, please insert the name assigned to your API Key and its password, both of which were defined at the moment of registration.">
-                <Input id="api-key-name" placeholder="API Key Name" />
-                <Input id="password" placeholder="API Key password" />
-                <Btn onClick={async () => {
-                    
-                }} content="Continue" />
+                <form className="flex flex-col gap-4">
+                    <Input id="api-key-name" placeholder="API Key Name" />
+                    <Input id="password" placeholder="API Key password" />
+                    <Btn onClick={async () => {
+                        
+                    }} content="Continue" />
+                </form>
                 <p>{res.message}</p>
             </Popup>
         </main>

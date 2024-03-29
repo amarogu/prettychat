@@ -2,7 +2,7 @@ import Link from "next/link";
 
 interface BtnProps {
     content: string;
-    onClick?: () => void;
+    onClick?: (() => void) | ((e: React.MouseEvent<HTMLButtonElement>) => void);
     href?: string;
 }
 
