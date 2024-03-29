@@ -1,12 +1,12 @@
-import mongoose from 'mongoose';
 import 'dotenv/config';
 import { NextRequest } from 'next/server';
 import User from '../../../../models/User';
+import connectDb from '../../../../connect';
 
 export async function POST(req: NextRequest) {
     try {
         const reqBody = await req.json() as {name: string, key: string, password: string};
-        await mongoose.connect(process.env.MONGODB_URI as string);
+        await connectDb();
         const user = new User({name: reqBody.name, password: reqBody.password, apiKey: reqBody.key});
         await user.save();
         return Response.json({message: 'The API key was successfully registered.'});

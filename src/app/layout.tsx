@@ -1,3 +1,4 @@
+import { AuthProvider } from './Providers'
 import './globals.css'
 
 import localFont from 'next/font/local'
@@ -24,7 +25,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${einaReg.variable} ${einaSemi.variable} ${einaBold.variable} font-einaReg text-body-dark-emphasized bg-background text-sm`}>{children}</body>
+      <body className={`${einaReg.variable} ${einaSemi.variable} ${einaBold.variable} font-einaReg text-body-dark-emphasized bg-background text-sm`}>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+      </body>
     </html>
   )
 }

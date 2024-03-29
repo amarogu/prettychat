@@ -6,13 +6,29 @@ import axios from "axios";
 import Res from "../../../../Classes/Res";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export default function App() {
 
     const router = useRouter();
 
     const handleContinue = async () => {
-        const nameInput = document.getElementById('api-key') as HTMLInputElement;
+        const nameInput = document.getElementById('api-key-name') as HTMLInputElement;
+        const passwordInput = document.getElementById('password') as HTMLInputElement;
+        const name = nameInput.value;
+        const password = passwordInput.value;
+
+        try {
+            const res = await signIn('credentials', {
+                name, password, redirect: false 
+            })
+            if (res?.error) {
+                return new Res('Invalid credentials.', 400);
+            }
+            router.replace('/app/chat');
+        } catch(err: any) {
+            console.log(err);
+        }
         
     }
 
@@ -24,8 +40,9 @@ export default function App() {
                 <form className="flex flex-col gap-4">
                     <Input id="api-key-name" placeholder="API Key Name" />
                     <Input id="password" placeholder="API Key password" />
-                    <Btn onClick={async () => {
-                        
+                    <Btn onClick={async (e) => {
+                        e.preventDefault();
+                        handleContinue();
                     }} content="Continue" />
                 </form>
                 <p>{res.message}</p>
