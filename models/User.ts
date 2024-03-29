@@ -1,7 +1,10 @@
+import bcrypt from "bcrypt";
 const mongoose = require('mongoose');
 if (mongoose.models.User) {
     mongoose.deleteModel('User');
 }
+
+const saltRounds = 10;
 
 const userSchema = new mongoose.Schema({
     apiKey: {
@@ -14,7 +17,27 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    password: {
+        type: String,
+        required: true,
+    }
 })
+
+userSchema.pre('save', function(this: any, next: any) {
+    if (this.isNew || this.isModified('password')) {
+        const document = this;
+        bcrypt.hash(document.password, saltRounds, function(err, hashedPassword) {
+            if (err) {
+                next(err);
+            } else {
+                document.password = hashedPassword;
+                next();
+            }
+        });
+    } else {
+        next();
+    }
+});
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
