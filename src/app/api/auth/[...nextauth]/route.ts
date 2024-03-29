@@ -12,7 +12,7 @@ const authOptions: AuthOptions = {
             name: 'credentials',
             credentials: {},
             async authorize(credentials, req) {
-                const {name, password} = credentials;
+                const {name, password} = credentials as {name: string, password: string};
                 try {
                     await connectDb();
                     const user = await User.findOne({name});
