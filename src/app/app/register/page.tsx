@@ -2,10 +2,10 @@
 import Btn from "../../Btn";
 import Input from "../../Input";
 import Popup from "../../Popup";
-import axios from "axios";
 import Res from "../../../../Classes/Res";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import axiosInstance from "../../../../axiosInstance";
 
 export default function App() {
 
@@ -19,7 +19,7 @@ export default function App() {
             return new Res('Please fill out all the fields.', 0);
         } else {
             try {
-                const res = await axios.post('/api/key', {name: apiKeyNameInput.value, key: apiKeyInput.value, password: passwordInput.value});
+                const res = await axiosInstance.post('/key', {name: apiKeyNameInput.value, key: apiKeyInput.value, password: passwordInput.value});
                 return new Res(res.data.message, res.status);
             } catch(err: any) {
                 return new Res(err.response.data.message, err.response.status);

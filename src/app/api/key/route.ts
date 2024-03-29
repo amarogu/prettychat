@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-require('dotenv').config();
+import mongoose from 'mongoose';
+import 'dotenv/config';
 import { NextRequest } from 'next/server';
 import User from '../../../../models/User';
 

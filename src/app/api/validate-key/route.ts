@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
-
-const mongoose = require('mongoose');
-const User = require('../../../../models/User');
+import mongoose from "mongoose";
+import User from "../../../../models/User";
+import 'dotenv/config';
 
 export async function POST(req: NextRequest) {
     try {
