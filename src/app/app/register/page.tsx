@@ -48,6 +48,7 @@ export default function App() {
                                 redirect: false
                             });
                             if(signInRes?.error) {
+                                console.log(signInRes.error);
                                 return () => setRes(new Res('Invalid credentials.', 401));
                             }
                             setTimeout(() => {
