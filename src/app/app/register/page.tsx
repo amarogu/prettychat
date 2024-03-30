@@ -41,15 +41,20 @@ export default function App() {
                         e.preventDefault();
                         const response = await handleContinue();
                         setRes(response);
+                        const nameInput = document.getElementById('api-key-name') as HTMLInputElement;
+                        const passwordInput = document.getElementById('password') as HTMLInputElement;
+                        const name = nameInput.value;
+                        const password = passwordInput.value;
                         if (response.message === 'The API key was successfully registered.') {
                             const signInRes = await signIn('credentials', {
-                                name: document.getElementById('api-key-name')?.nodeValue as string,
-                                password: document.getElementById('password')?.nodeValue as string,
+                                name,
+                                password,
                                 redirect: false
                             });
                             if(signInRes?.error) {
                                 console.log(signInRes.error);
-                                return () => setRes(new Res('Invalid credentials.', 401));
+                                setRes(new Res('Invalid credentials.', 401));
+                                return;
                             }
                             setTimeout(() => {
                                 router.replace('/app/chat');
