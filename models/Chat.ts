@@ -6,9 +6,8 @@ if (mongoose.models.Chat) {
 
 const chatSchema = new mongoose.Schema({
     name: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'User',
-        required: true
     },
     messages: {
         type: [mongoose.Schema.Types.ObjectId],
