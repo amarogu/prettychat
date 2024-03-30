@@ -1,5 +1,7 @@
+'use client';
+import Btn from "@/app/Btn";
 import Input from "@/app/Input";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
 export default function Sidebar() {
 
@@ -12,10 +14,11 @@ export default function Sidebar() {
                 <p className="text-xl">+</p>
             </div>
             <Input placeholder="Search" className="outline-gray bg-gray" />
-            <div className="h-full"></div>
-            <div className="flex">
-                <div className="flex flex-col gap-2">
+            <div className="grow"></div>
+            <div className="flex p-2 rounded-sm bg-gray">
+                <div className="flex items-start flex-col gap-2">
                     <p>{session?.user?.name}</p>
+                    <button className="text-body-dark" onClick={() => signOut()}>Log out</button>
                 </div>
             </div>
         </aside>

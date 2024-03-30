@@ -7,7 +7,7 @@ import Sidebar from "./Sidebar";
 export default function Chat() {
     const {data: session} = useSession();
     return (
-        <main className="p-8">
+        <main className="p-8 h-screen">
             <Sidebar />
         </main>
     )
