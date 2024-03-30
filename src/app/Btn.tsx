@@ -9,15 +9,15 @@ interface BtnProps {
 export default function Btn({content, onClick, href}: BtnProps) {
     if (onClick) {
         return (
-            <button onClick={onClick} className="bg-accent p-2 rounded-sm focus:outline outline-offset-2 outline-accent">{content}</button>
+            <button onClick={onClick} className="bg-accent py-2 px-4 rounded-sm focus:outline outline-offset-2 outline-accent">{content}</button>
         )
     } else if (href) {
         return (
-            <Link className="bg-accent text-center p-2 rounded-sm focus:outline outline-offset-2 outline-accent" href={href}>{content}</Link>
+            <Link className="bg-accent text-center px-4 py-2 rounded-sm focus:outline outline-offset-2 outline-accent" href={href}>{content}</Link>
         )
     } else {
         return (
-            <button className="bg-accent p-2 rounded-sm focus:outline outline-offset-2 outline-accent">{content}</button>
+            <button className="bg-accent px-4 py-2 rounded-sm focus:outline outline-offset-2 outline-accent">{content}</button>
         )
     }
 }
