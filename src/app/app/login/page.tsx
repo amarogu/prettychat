@@ -23,7 +23,7 @@ export default function App() {
                 name, password, redirect: false 
             })
             if (res?.error) {
-                return new Res('Invalid credentials.', 400);
+                return new Res('Invalid credentials.', 401);
             }
             router.replace('/app/chat');
         } catch(err: any) {
@@ -32,7 +32,7 @@ export default function App() {
         
     }
 
-    const [res, setRes] = useState<Res>({message: '', status: 0});
+    const [res, setRes] = useState<Res | undefined>({message: '', status: 0});
 
     return (
         <main className="h-screen flex items-center justify-center p-8">
@@ -42,10 +42,10 @@ export default function App() {
                     <Input id="password" placeholder="API Key password" />
                     <Btn onClick={async (e) => {
                         e.preventDefault();
-                        handleContinue();
+                        setRes(await handleContinue());
                     }} content="Continue" />
                 </form>
-                <p>{res.message}</p>
+                <p>{res?.message}</p>
             </Popup>
         </main>
     )

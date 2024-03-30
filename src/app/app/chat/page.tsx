@@ -1,28 +1,26 @@
+'use client';
 import Popup from "@/app/Popup";
-import Res from "../../../../Classes/Res";
-import axiosInstance from "../../../../axiosInstance";
 import Btn from "@/app/Btn";
+import { useSession, signOut } from "next-auth/react";
 
-export default async function Chat({searchParams}: {searchParams: {key: string}}) {
+export default function Chat() {
 
-    const key = searchParams.key;
-    const res = await axiosInstance.post('/validate-key', {key: key});
-    const data: Res = res.data;
+    const {data: session} = useSession();
 
-    if (data.message === 'match found') {
+    if (session) {
         return (
             <main>
-                <h1>Chat</h1>
+                <h1>{session?.user?.name}</h1>
+                <Btn content="logout" onClick={() => {
+                    signOut();
+                }} />
             </main>
         )
     } else {
         return (
-            <main className="flex h-screen items-center justify-center">
-                <Popup title="401 Unauthorized" message="Unregistered API key">
-                    <p>Please register an API key before trying to access this page.</p>
-                    <Btn content="Go back" href='/' />
-                </Popup>
-            </main>
+            <Popup title="Unauthorized" message="You must be logged in to access this page.">
+                <Btn content="Login page" href="/app/login" />
+            </Popup>
         )
     }
 }

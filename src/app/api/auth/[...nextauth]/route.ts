@@ -6,7 +6,7 @@ import connectDb from '../../../../../connect';
 import User from '../../../../../models/User';
 import bcrypt from 'bcrypt';
 
-const authOptions: AuthOptions = {
+export const authOptions: AuthOptions = {
     providers: [
         CredentialsProvider({
             name: 'credentials',
@@ -36,7 +36,8 @@ const authOptions: AuthOptions = {
     },
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
-        signIn: '/login'
+        signIn: '/app/login',
+        signOut: '/app/logout'
     }
 };
 
