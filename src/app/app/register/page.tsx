@@ -6,6 +6,7 @@ import Res from "../../../../Classes/Res";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axiosInstance from "../../../../axiosInstance";
+import { signIn } from "next-auth/react";
 
 export default function App() {
 
@@ -41,9 +42,16 @@ export default function App() {
                         const response = await handleContinue();
                         setRes(response);
                         if (response.message === 'The API key was successfully registered.') {
+                            const signInRes = await signIn('credentials', {
+                                name: document.getElementById('api-key-name')?.nodeValue as string,
+                                password: document.getElementById('password')?.nodeValue as string,
+                                redirect: false
+                            });
+                            if(signInRes?.error) {
+                                return () => setRes(new Res('Invalid credentials.', 401));
+                            }
                             setTimeout(() => {
-                                const input = document.getElementById('api-key') as HTMLInputElement;
-                                router.push(`/app/chat?key=${input.value}`,);
+                                router.replace('/app/chat');
                             }, 1500);
                         }
                     }} content="Continue" />
