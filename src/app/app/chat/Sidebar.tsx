@@ -16,7 +16,7 @@ export default function Sidebar() {
     const [chats, setChats] = useState<IChat[]>([]);
 
     const createChat = async () => {
-        await axiosInstance.post('/createChat', {name: session?.user?.name});
+        await axiosInstance.get('/createChat');
         const chats = await axiosInstance.get('/chats');
         setChats(chats.data);
     }
