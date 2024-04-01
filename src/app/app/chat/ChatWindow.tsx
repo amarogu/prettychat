@@ -11,7 +11,9 @@ interface ChatWindowProps {
 export default function ChatWindow({chat}: ChatWindowProps) {
 
     const sendMessage = async (content: string, sender: 'user' | 'system', chatId: string) => {
-        await axiosInstance.post('/message', {content: content, sender: sender, chatId: chatId});
+        if (content !== '') {
+            await axiosInstance.post('/message', {content: content, sender: sender, chatId: chatId});
+        }
     }
 
     const getMessageInput: () => string = () => {
