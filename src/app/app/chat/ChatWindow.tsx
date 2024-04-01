@@ -3,7 +3,7 @@ import Input from "@/app/Input";
 import { IChat } from "../../../../models/Chat";
 
 interface ChatWindowProps {
-    chat: IChat;
+    chat: IChat | null;
 }
 
 export default function ChatWindow({chat}: ChatWindowProps) {

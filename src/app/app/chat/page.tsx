@@ -1,5 +1,5 @@
 'use client';
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { IChat } from "../../../../models/Chat";
 import axiosInstance from "../../../../axiosInstance";
@@ -41,7 +41,7 @@ export default function Chat() {
     return (
         <main className="p-8 flex gap-8 h-screen">
             <Sidebar chats={chats} updateChat={updateChat} createChat={createChat} deleteChat={deleteChat} />
-            <ChatWindow />
+            <ChatWindow chat={currentChat} />
         </main>
     )
 }
