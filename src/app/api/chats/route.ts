@@ -10,7 +10,8 @@ export async function GET() {
         if (session) {
             await connectDb();
             const chats = await Chat.find({name: session.user?.name});
-            return Response.json(chats);
+            const populatedChats = await Chat.populate(chats, 'messages');
+            return Response.json(populatedChats);
         } else {
             return new Response(new Blob([JSON.stringify({message: 'Unauthenticated'})], {type: 'application/json'}), {status: 401});
         }

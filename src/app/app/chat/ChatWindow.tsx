@@ -27,7 +27,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
         <section className="flex h-full grow flex-col">
             <div className="grow flex flex-col justify-center items-center">
                 {
-                    chat ? chat.messages.map((message) => {
+                    chat?.messages.length === 0 ? chat.messages.map((message) => {
                         return (
                             <div key={message._id}>
                                 <p>{message.content}</p>

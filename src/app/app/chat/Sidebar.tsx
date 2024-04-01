@@ -29,8 +29,8 @@ export default function Sidebar({chats, createChat, deleteChat, updateChat}: Sid
                     const date = new Date(chat.updatedAt);
                     const formattedDate = `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`;
                     return (
-                        <button className="text-left" onClick={() => updateChat(chat)}>
-                            <div key={chat._id} className="flex flex-col gap-2 p-4 rounded-sm bg-gray">
+                        <button key={chat._id} className="text-left" onClick={() => updateChat(chat)}>
+                            <div className="flex flex-col gap-2 p-4 rounded-sm bg-gray">
                                 <div className="flex items-center justify-between">
                                     <p>{chat.title}</p>
                                     <button className="hover:scale-125" onClick={() => {deleteChat(chat._id); updateChat(chats[chats.indexOf(chat) - 1])}}>

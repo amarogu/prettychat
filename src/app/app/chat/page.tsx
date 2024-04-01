@@ -31,12 +31,14 @@ export default function Chat() {
 
     const getChat = async (chatId: string) => {
         const chat = await axiosInstance.post('/chat', {chatId: chatId});
+        console.log(chat.data);
         setCurrentChat(chat.data);
     }
 
     useEffect(() => {
         const fetchChats = async () => {
             const chats = await axiosInstance.get('/chats');
+            console.log(chats.data);
             setChats(chats.data);
             setCurrentChat(chats.data[0]);
         }
