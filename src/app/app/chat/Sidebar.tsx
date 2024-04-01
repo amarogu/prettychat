@@ -7,6 +7,7 @@ import Account from '../../../../public/account_circle.svg';
 import axiosInstance from "../../../../axiosInstance";
 import { useEffect, useState } from "react";
 import { IChat } from "../../../../models/Chat";
+import Delete from "../../../../public/delete.svg";
 
 export default function Sidebar() {
 
@@ -42,7 +43,12 @@ export default function Sidebar() {
                     return (
                         <button className="text-left">
                             <div key={chat._id} className="flex flex-col gap-2 p-4 rounded-sm bg-gray">
-                                <p>{chat.title}</p>
+                                <div className="flex items-center justify-between">
+                                    <p>{chat.title}</p>
+                                    <button className="hover:scale-125">
+                                        <Image src={Delete} width={16} alt="Delete chat" />
+                                    </button>
+                                </div>
                                 <p className="text-body-dark">{formattedDate}</p>
                             </div>
                         </button>
