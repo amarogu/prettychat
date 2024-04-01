@@ -11,6 +11,12 @@ export default function Chat() {
 
     const [chats, setChats] = useState<IChat[]>([]);
 
+    const [currentChat, setCurrentChat] = useState<IChat | null>(null);
+
+    const updateChat = (chat: IChat) => {
+        setCurrentChat(chat);
+    }
+
     const createChat = async () => {
         await axiosInstance.get('/createChat');
         const chats = await axiosInstance.get('/chats');
@@ -27,13 +33,14 @@ export default function Chat() {
         const fetchChats = async () => {
             const chats = await axiosInstance.get('/chats');
             setChats(chats.data);
+            setCurrentChat(chats.data[0]);
         }
         fetchChats();
     }, [session?.user?.name]);
 
     return (
         <main className="p-8 flex gap-8 h-screen">
-            <Sidebar chats={chats} createChat={createChat} deleteChat={deleteChat} />
+            <Sidebar chats={chats} updateChat={updateChat} createChat={createChat} deleteChat={deleteChat} />
             <ChatWindow />
         </main>
     )

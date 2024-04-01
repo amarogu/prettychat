@@ -1,7 +1,12 @@
 import Btn from "@/app/Btn";
 import Input from "@/app/Input";
+import { IChat } from "../../../../models/Chat";
 
-export default function ChatWindow() {
+interface ChatWindowProps {
+    chat: IChat;
+}
+
+export default function ChatWindow({chat}: ChatWindowProps) {
     return (
         <section className="flex h-full grow flex-col">
             <div className="grow flex flex-col justify-center items-center">

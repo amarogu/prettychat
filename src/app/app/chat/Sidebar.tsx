@@ -8,11 +8,12 @@ import Delete from "../../../../public/delete.svg";
 
 interface SidebarProps {
     chats: IChat[];
+    updateChat: (chat: IChat) => void;
     createChat: () => void;
     deleteChat: (chatID: string) => void;
 }
 
-export default function Sidebar({chats, createChat, deleteChat}: SidebarProps) {
+export default function Sidebar({chats, createChat, deleteChat, updateChat}: SidebarProps) {
 
     const {data: session} = useSession();
 
@@ -28,7 +29,7 @@ export default function Sidebar({chats, createChat, deleteChat}: SidebarProps) {
                     const date = new Date(chat.updatedAt);
                     const formattedDate = `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`;
                     return (
-                        <button className="text-left">
+                        <button className="text-left" onClick={() => updateChat(chat)}>
                             <div key={chat._id} className="flex flex-col gap-2 p-4 rounded-sm bg-gray">
                                 <div className="flex items-center justify-between">
                                     <p>{chat.title}</p>
