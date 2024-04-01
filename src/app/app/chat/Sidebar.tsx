@@ -17,13 +17,19 @@ export default function Sidebar() {
 
     const createChat = async () => {
         await axiosInstance.post('/createChat', {name: session?.user?.name});
-        const chats = await axiosInstance.post('/chats', {name: session?.user?.name});
+        const chats = await axiosInstance.get('/chats');
+        setChats(chats.data);
+    }
+
+    const deleteChat = async (chatID: string) => {
+        await axiosInstance.post('/deleteChat', {_id: chatID});
+        const chats = await axiosInstance.get('/chats');
         setChats(chats.data);
     }
 
     useEffect(() => {
         const fetchChats = async () => {
-            const chats = await axiosInstance.post('/chats', {name: session?.user?.name});
+            const chats = await axiosInstance.get('/chats');
             setChats(chats.data);
         }
         fetchChats();
@@ -45,7 +51,7 @@ export default function Sidebar() {
                             <div key={chat._id} className="flex flex-col gap-2 p-4 rounded-sm bg-gray">
                                 <div className="flex items-center justify-between">
                                     <p>{chat.title}</p>
-                                    <button className="hover:scale-125">
+                                    <button className="hover:scale-125" onClick={() => deleteChat(chat._id)}>
                                         <Image src={Delete} width={16} alt="Delete chat" />
                                     </button>
                                 </div>

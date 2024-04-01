@@ -1,13 +1,19 @@
 import { NextRequest } from "next/server";
 import connectDb from "../../../../connect";
 import { Chat } from "../../../../models/Chat";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
 
-export async function POST(req: NextRequest) {
+export async function GET() {
+    const session = await getServerSession(authOptions);
     try {
-        const reqBody = await req.json() as { name: string };
-        await connectDb();
-        const chats = await Chat.find({name: reqBody.name});
-        return Response.json(chats);
+        if (session) {
+            await connectDb();
+            const chats = await Chat.find({name: session.user?.name});
+            return Response.json(chats);
+        } else {
+            return new Response(new Blob([JSON.stringify({message: 'Unauthenticated'})], {type: 'application/json'}), {status: 401});
+        }
     } catch (err: any) {
         return Response.json({message: 'An error occurred', error: err});
     }

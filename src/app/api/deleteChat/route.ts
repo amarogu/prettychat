@@ -25,6 +25,6 @@ export async function POST(req: NextRequest) {
             return new Response(new Blob([JSON.stringify({message: 'Unauthenticated'})], {type: 'application/json'}), {status: 401});
         }
     } catch (err: any) {
-
+        return Response.json({message: 'An error occurred', error: err});
     }
 }
