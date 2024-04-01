@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import connectDb from "../../../../connect";
 import Chat from "../../../../models/Chat";
 
-export default async function POST(req: NextRequest) {
+export async function POST(req: NextRequest) {
     try {
         const reqBody = await req.json() as { name: string };
         await connectDb();

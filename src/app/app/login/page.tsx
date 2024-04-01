@@ -39,7 +39,7 @@ export default function App() {
             <Popup title="Login 🚪" message="To login, please insert the name assigned to your API Key and its password, both of which were defined at the moment of registration.">
                 <form className="flex flex-col gap-4">
                     <Input id="api-key-name" placeholder="API Key Name" />
-                    <Input id="password" placeholder="API Key password" />
+                    <Input id="password" type="password" placeholder="API Key password" />
                     <Btn onClick={async (e) => {
                         e.preventDefault();
                         setRes(await handleContinue());
