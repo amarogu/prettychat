@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import connectDb from "../../../../connect";
-import Chat from "../../../../models/Chat";
+import { Chat } from "../../../../models/Chat";
 
 export async function POST(req: NextRequest) {
     try {

@@ -4,6 +4,16 @@ if (mongoose.models.Chat) {
     mongoose.deleteModel('Chat');
 }
 
+export interface IChat {
+    _id: string;
+    __v: number;
+    createdAt: string;
+    updatedAt: string;
+    name: string;
+    title: string;
+    messages: string[];
+}
+
 const chatSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -21,5 +31,4 @@ const chatSchema = new mongoose.Schema({
     },
 }, {timestamps: true})
 
-const Chat = mongoose.model('Chat', chatSchema);
-export default Chat;
+export const Chat = mongoose.model('Chat', chatSchema);

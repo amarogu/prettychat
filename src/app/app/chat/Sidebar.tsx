@@ -5,19 +5,28 @@ import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 import Account from '../../../../public/account_circle.svg';
 import axiosInstance from "../../../../axiosInstance";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { IChat } from "../../../../models/Chat";
 
 export default function Sidebar() {
 
     const {data: session} = useSession();
 
-    const [chats, setChats] = useState<any[]>([]);
+    const [chats, setChats] = useState<IChat[]>([]);
 
     const createChat = async () => {
         await axiosInstance.post('/createChat', {name: session?.user?.name});
         const chats = await axiosInstance.post('/chats', {name: session?.user?.name});
-        console.log(chats);
+        setChats(chats.data);
     }
+
+    useEffect(() => {
+        const fetchChats = async () => {
+            const chats = await axiosInstance.post('/chats', {name: session?.user?.name});
+            setChats(chats.data);
+        }
+        fetchChats();
+    }, [session?.user?.name]);
 
     return (
         <aside className="h-full flex flex-col gap-8 w-2/3 max-w-xs">
@@ -26,7 +35,20 @@ export default function Sidebar() {
                 <button className="text-xl" onClick={createChat}>+</button>
             </div>
             <Input placeholder="Search" className="outline-gray bg-gray" />
-            <div className="grow"></div>
+            <div className="grow flex overflow-y-scroll flex-col gap-4">{
+                chats.map((chat) => {
+                    const date = new Date(chat.updatedAt);
+                    const formattedDate = `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`;
+                    return (
+                        <button className="text-left">
+                            <div key={chat._id} className="flex flex-col gap-2 p-4 rounded-sm bg-gray">
+                                <p>{chat.title}</p>
+                                <p className="text-body-dark">{formattedDate}</p>
+                            </div>
+                        </button>
+                    )
+                })
+            }</div>
             <div className="flex p-4 rounded-sm bg-gray">
                 <div className="flex items-start flex-col gap-2">
                     <div className="flex gap-2 items-center">
