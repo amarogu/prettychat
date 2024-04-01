@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
                     await msg.save();
                     chat.messages.push(msg._id);
                     await chat.save();
+                    return Response.json({message: 'The message was successfully sent.'});
                 } else {
                     return new Response(new Blob([JSON.stringify({message: 'This chat does not exist'})], {type: 'application/json'}), {status: 404});
                 }

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { IMessage } from "./Message";
 if (mongoose.models.Chat) {
     mongoose.deleteModel('Chat');
 }
@@ -10,7 +11,7 @@ export interface IChat {
     updatedAt: string;
     name: string;
     title: string;
-    messages: string[];
+    messages: IMessage[];
 }
 
 const chatSchema = new mongoose.Schema({

@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
             await connectDb();
             const chat = await Chat.findById(reqBody.chatId);
             if (chat) {
-                return Response.json(chat);
+                return Response.json(chat.populate('messages'));
             } else {
                 return new Response(new Blob([JSON.stringify({message: 'This chat does not exist'})], {type: 'application/json'}), {status: 404});
             }
