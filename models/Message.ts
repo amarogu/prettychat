@@ -9,6 +9,7 @@ export interface IMessage {
     createdAt: string;
     updatedAt: string;
     sender: 'user' | 'system';
+    content: string;
 }
 
 const messageSchema = new mongoose.Schema({
