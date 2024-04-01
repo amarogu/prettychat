@@ -2,7 +2,6 @@ import 'dotenv/config';
 import { NextRequest } from 'next/server';
 import User from '../../../../models/User';
 import connectDb from '../../../../connect';
-import { signIn } from 'next-auth/react';
 import { Chat } from '../../../../models/Chat';
 
 export async function POST(req: NextRequest) {
