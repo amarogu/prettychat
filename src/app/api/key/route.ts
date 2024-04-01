@@ -3,12 +3,15 @@ import { NextRequest } from 'next/server';
 import User from '../../../../models/User';
 import connectDb from '../../../../connect';
 import { signIn } from 'next-auth/react';
+import { Chat } from '../../../../models/Chat';
 
 export async function POST(req: NextRequest) {
     try {
         const reqBody = await req.json() as {name: string, key: string, password: string};
         await connectDb();
         const user = new User({name: reqBody.name, password: reqBody.password, apiKey: reqBody.key});
+        const chat = new Chat({name: reqBody.name});
+        await chat.save();
         await user.save();
         return Response.json({message: 'The API key was successfully registered.'});
     } catch(err: any) {
