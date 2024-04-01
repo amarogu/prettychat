@@ -13,7 +13,8 @@ export interface IMessage {
 
 const messageSchema = new mongoose.Schema({
     sender: {
-        type: 'user' || 'system',
+        type: String,
+        enum: ['user', 'system'],
         required: true
     },
     content: {

@@ -6,14 +6,15 @@ import axiosInstance from "../../../../axiosInstance";
 
 interface ChatWindowProps {
     chat: IChat | null;
+    getChat: (chatId: string) => void;
 }
 
-export default function ChatWindow({chat}: ChatWindowProps) {
+export default function ChatWindow({chat, getChat}: ChatWindowProps) {
 
     const sendMessage = async (content: string, sender: 'user' | 'system', chatId: string) => {
         if (content !== '') {
             await axiosInstance.post('/message', {content: content, sender: sender, chatId: chatId});
-            
+            getChat(chatId);
         }
     }
 
