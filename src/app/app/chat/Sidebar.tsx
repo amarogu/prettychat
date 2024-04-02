@@ -10,7 +10,7 @@ interface SidebarProps {
     chats: IChat[];
     updateChat: (chat: IChat) => void;
     createChat: () => void;
-    deleteChat: (chatID: string) => void;
+    deleteChat: (chatID: string) => Promise<IChat[]>;
 }
 
 export default function Sidebar({chats, createChat, deleteChat, updateChat}: SidebarProps) {
@@ -25,7 +25,7 @@ export default function Sidebar({chats, createChat, deleteChat, updateChat}: Sid
             </div>
             <Input placeholder="Search" className="outline-gray bg-gray" />
             <div className="grow flex overflow-y-scroll flex-col gap-4">{
-                chats.map((chat) => {
+                chats.map((chat, i) => {
                     const date = new Date(chat.updatedAt);
                     const formattedDate = `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`;
                     return (
@@ -33,7 +33,7 @@ export default function Sidebar({chats, createChat, deleteChat, updateChat}: Sid
                             <div className="flex flex-col gap-2 p-4 rounded-sm bg-gray">
                                 <div className="flex items-center justify-between">
                                     <p>{chat.title}</p>
-                                    <button className="hover:scale-125" onClick={() => {updateChat(chats[chats.indexOf(chat) - 1]); deleteChat(chat._id);}}>
+                                    <button className="hover:scale-125" onClick={async (e) => {e.stopPropagation(); const updatedChats = await deleteChat(chat._id); updateChat(updatedChats[0])}}>
                                         <Image src={Delete} width={16} alt="Delete chat" />
                                     </button>
                                 </div>

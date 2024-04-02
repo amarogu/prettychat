@@ -13,8 +13,6 @@ export default function Chat() {
 
     const [currentChat, setCurrentChat] = useState<IChat | null>(null);
 
-    console.log(currentChat);
-
     const updateChat = (chat: IChat) => {
         setCurrentChat(chat);
     }
@@ -30,6 +28,7 @@ export default function Chat() {
         await axiosInstance.post('/deleteChat', {_id: chatID});
         const chats = await axiosInstance.get('/chats');
         setChats(chats.data);
+        return chats.data;
     }
 
     const getChat = async (chatId: string) => {
