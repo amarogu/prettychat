@@ -24,22 +24,22 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
     }
 
     return (
-        <section className="flex h-full grow flex-col">
-            <div className="grow flex flex-col justify-center items-center">
-                {
-                    chat?.messages.length !== 0 && chat ? chat.messages.map((message) => {
-                        return (
-                            <div key={message._id}>
-                                <p>{message.content}</p>
-                                <p className="text-body-dark">{message.sender}</p>
-                            </div>
-                        )
-                    }) :
-                    <>
-                        <h1 className="text-2xl font-einaBold">New Chat</h1>
-                        <p className="w-1/4 text-center">To begin chatting, start typing in the input field below.</p>
-                    </>
-                }
+        <section className="flex h-full grow gap-4 flex-col">
+            <div className="grow flex flex-col gap-4 overflow-y-scroll justify-end">
+            {
+                chat?.messages.length !== 0 && chat ? chat.messages.map((message) => {
+                    return (
+                        <div key={message._id} className={`${message.sender === 'user' ? 'self-end' : 'self-start'} bg-gray px-4 py-2`}>
+                            <p>{message.content}</p>
+                            <p className="text-body-dark">{message.sender}</p>
+                        </div>
+                    )
+                }) :
+                <div className="grow flex flex-col justify-center items-center">
+                    <h1 className="text-2xl font-einaBold">New Chat</h1>
+                    <p className="w-1/4 text-center">To begin chatting, start typing in the input field below.</p>
+                </div>
+            }
             </div>
             <div className="flex gap-2">
                 <Input id="message-input" placeholder="Type a message" className="bg-gray grow outline-gray" />
