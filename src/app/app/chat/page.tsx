@@ -46,7 +46,6 @@ export default function Chat() {
     useEffect(() => {
         const fetchChats = async () => {
             const chats = await axiosInstance.get('/chats');
-            console.log(chats.data);
             setChats(chats.data);
             setCurrentChat(chats.data[0]);
         }
