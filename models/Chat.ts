@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IMessage } from "./Message";
+import { IMessage, Message } from "./Message";
 if (mongoose.models.Chat) {
     mongoose.deleteModel('Chat');
 }
@@ -26,7 +26,7 @@ const chatSchema = new mongoose.Schema({
     },
     messages: {
         type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Message',
+        ref: Message,
         required: true
     },
 }, {timestamps: true})

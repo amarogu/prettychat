@@ -12,8 +12,8 @@ export async function POST(req: NextRequest) {
         await connectDb();
         const reqBody = await req.json() as { _id: string };
         const chat = await Chat.findById({ _id: reqBody._id});
-        const chats = await Chat.find();
         if (session) {
+            const chats = await Chat.find({name: session.user?.name});
             if (chat) {
                 if (session.user?.name === chat.name) {
                     if (chats.length > 1) {
