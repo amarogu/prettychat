@@ -4,6 +4,10 @@ import { authOptions } from "../auth/[...nextauth]/route";
 import { Chat } from "../../../../models/Chat";
 import { Message } from "../../../../models/Message";
 import connectDb from "../../../../connect";
+import OpenAI from 'openai';
+import { IChat } from "../../../../models/Chat";
+
+const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY})
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
@@ -18,6 +22,16 @@ export async function POST(req: NextRequest) {
                     await msg.save();
                     chat.messages.push(msg._id);
                     await chat.save();
+                    const populatedChat = await chat.populate('messages') as unknown as IChat;
+                    const completion = await openai.chat.completions.create({
+                        model: 'gpt-3.5-turbo',
+                        messages: [...populatedChat.messages.map((msg) => {
+                            return {
+                                role: msg.sender,
+                                content: msg.content
+                            }
+                        })]
+                    });
                     return Response.json({message: 'The message was successfully sent.'});
                 } else {
                     return new Response(new Blob([JSON.stringify({message: 'This chat does not exist'})], {type: 'application/json'}), {status: 404});
