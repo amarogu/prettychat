@@ -25,7 +25,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
 
     return (
         <section className="flex h-full grow gap-4 flex-col">
-            <div className="grow flex flex-col gap-4 overflow-y-scroll justify-end">
+            <div className="grow flex flex-col gap-4 overflow-y-scroll justify-start">
             {
                 chat?.messages.length !== 0 && chat ? chat.messages.map((message) => {
                     return (
