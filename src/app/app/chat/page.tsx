@@ -13,6 +13,8 @@ export default function Chat() {
 
     const [currentChat, setCurrentChat] = useState<IChat | null>(null);
 
+    console.log(currentChat);
+
     const updateChat = (chat: IChat) => {
         setCurrentChat(chat);
     }
