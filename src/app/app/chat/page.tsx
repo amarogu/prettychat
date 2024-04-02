@@ -21,6 +21,7 @@ export default function Chat() {
         await axiosInstance.get('/createChat');
         const chats = await axiosInstance.get('/chats');
         setChats(chats.data);
+        setCurrentChat(chats.data[chats.data.length - 1]);
     }
 
     const deleteChat = async (chatID: string) => {
@@ -30,9 +31,16 @@ export default function Chat() {
     }
 
     const getChat = async (chatId: string) => {
-        const chat = await axiosInstance.post('/chat', {chatId: chatId});
-        console.log(chat.data);
-        setCurrentChat(chat.data);
+        const fetchedChat = await axiosInstance.post('/chat', {chatId: chatId});
+        setCurrentChat(fetchedChat.data);
+        setChats(chats.map((chat) => {
+            if (chat._id === chatId) {
+                return fetchedChat.data;
+            } else {
+                return chat;
+            }
+        }
+        ));
     }
 
     useEffect(() => {
