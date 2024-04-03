@@ -1,15 +1,18 @@
-'use client';
+import React, { useState, useEffect } from 'react';
 import Btn from "@/app/Btn";
 import Input from "@/app/Input";
-import { IChat } from "../../../../models/Chat";
+import { IChat } from "../../../../models/Chat"; // Ensure IMessage is imported
+import { IMessage } from '../../../../models/Message';
 import { useCompletion } from 'ai/react';
+import { v4 as uuidv4 } from 'uuid';
 
 interface ChatWindowProps {
     chat: IChat | null;
+    getChat: (chatId: string) => void;
 }
 
-export default function ChatWindow({chat}: ChatWindowProps) {
-
+export default function ChatWindow({chat, getChat}: ChatWindowProps) {
+    const [messages, setMessages] = useState<IMessage[]>(chat?.messages || []);
     const {
         completion,
         input,
@@ -22,26 +25,43 @@ export default function ChatWindow({chat}: ChatWindowProps) {
         body: {
             sender: 'system',
             chatId: chat?._id
+        },
+        onFinish: () => {
+            if (chat?._id) {
+                getChat(chat._id);
+            }
         }
     });
+
+    useEffect(() => {
+        if (completion) {
+            const newMessage: IMessage = {
+                _id: uuidv4(),
+                __v: 0, // Assuming this is required
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                content: completion, 
+                sender: 'system', 
+            };
+
+            setMessages((prevMessages) => [...prevMessages, newMessage]);
+        }
+    }, [completion]);
 
     return (
         <section className="flex h-full grow gap-4 flex-col">
             <div className="grow flex flex-col gap-4 overflow-y-scroll justify-start">
-            {
-                chat?.messages.length !== 0 && chat ? chat.messages.map((message) => {
-                    return (
-                        <div key={message._id} className={`${message.sender === 'user' ? 'self-end' : 'self-start'} bg-gray px-4 py-2`}>
-                            <p>{message.content}</p>
-                            <p className="text-body-dark">{message.sender}</p>
-                        </div>
-                    )
-                }) :
-                <div className="grow flex flex-col justify-center items-center">
-                    <h1 className="text-2xl font-einaBold">New Chat</h1>
-                    <p className="w-1/4 text-center">To begin chatting, start typing in the input field below.</p>
-                </div>
-            }
+                {messages.length !== 0 ? messages.map((message) => (
+                    <div key={message._id} className={`${message.sender === 'user' ? 'self-end' : 'self-start'} bg-gray px-4 py-2`}>
+                        <p>{message.content}</p>
+                        <p className="text-body-dark">{message.sender}</p>
+                    </div>
+                )) : (
+                    <div className="grow flex flex-col justify-center items-center">
+                        <h1 className="text-2xl font-einaBold">New Chat</h1>
+                        <p className="w-1/4 text-center">To begin chatting, start typing in the input field below.</p>
+                    </div>
+                )}
             </div>
             <form className="flex gap-2" onSubmit={(e) => {handleSubmit(e)}}>
                 <Input value={input} onChange={handleInputChange} id="message-input" placeholder="Type a message" className="bg-gray grow outline-gray" />
@@ -49,5 +69,5 @@ export default function ChatWindow({chat}: ChatWindowProps) {
                 <Btn content="Stop" onClick={() => stop} />
             </form>
         </section>
-    )
+    );
 }

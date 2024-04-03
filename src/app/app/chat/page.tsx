@@ -56,7 +56,7 @@ export default function Chat() {
     return (
         <main className="p-8 flex gap-8 h-screen">
             <Sidebar chats={chats} updateChat={updateChat} createChat={createChat} deleteChat={deleteChat} />
-            <ChatWindow chat={currentChat} />
+            <ChatWindow chat={currentChat} getChat={getChat} />
         </main>
     )
 }
