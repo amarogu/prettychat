@@ -8,26 +8,16 @@ import OpenAI from "openai";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { IUser, User } from "../../../../models/User";
 
-export const config = {
-    runtime: 'edge', // for Edge API Routes only
-    unstable_allowDynamic: [
-      // allows a single file
-      '/lib/utilities.js',
-      // use a glob to allow anything in the function-bind 3rd party module
-      '/node_modules/function-bind/**',
-    ],
-  }
-
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
     try {
         await connectDb();
         if (session && session.user?.name) {
-            const reqBody = await req.json() as { content: string, sender: 'user' | 'system', chatId: string };
-            if (reqBody.content !== '') {
+            const reqBody = await req.json() as { prompt: string, sender: 'user' | 'system', chatId: string };
+            if (reqBody.prompt !== '') {
                 const chat = await Chat.findById(reqBody.chatId);
                 if (chat) {
-                    const msg = new Message({content: reqBody.content, sender: reqBody.sender});
+                    const msg = new Message({content: reqBody.prompt, sender: reqBody.sender});
                     await msg.save();
                     chat.messages.push(msg._id);
                     await chat.save();

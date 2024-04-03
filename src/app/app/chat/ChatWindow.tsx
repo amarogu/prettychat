@@ -2,48 +2,28 @@
 import Btn from "@/app/Btn";
 import Input from "@/app/Input";
 import { IChat } from "../../../../models/Chat";
-import axiosInstance from "../../../../axiosInstance";
-import { IUser } from "../../../../models/User";
-import OpenAI from 'openai';
-import { OpenAIStream } from 'ai';
-import { IMessage } from "../../../../models/Message";
+import { useCompletion } from 'ai/react';
 
 interface ChatWindowProps {
     chat: IChat | null;
-    getChat: (chatId: string) => void;
 }
 
-export default function ChatWindow({chat, getChat}: ChatWindowProps) {
+export default function ChatWindow({chat}: ChatWindowProps) {
 
-    /*
-    const getCompletion = async (key: string, msgs: IMessage[]) => {
-        const openai = new OpenAI({apiKey: key});
-        const completion = await openai.chat.completions.create({
-            model: 'gpt-3.5-turbo',
-            messages: [
-                ...msgs.map((msg) => {
-                    return {
-                        role: msg.sender,
-                        content: msg.content
-                    }
-                })
-            ]
-        });
-        console.log(completion.choices[0].message.content);
-    }
-    */
-
-    const sendMessage = async (content: string, sender: 'user' | 'system', chatId: string) => {
-        if (content !== '') {
-            console.log(await axiosInstance.post('/message', {content: content, sender: sender, chatId: chatId}));
-            getChat(chatId);
+    const {
+        completion,
+        input,
+        stop,
+        isLoading,
+        handleInputChange,
+        handleSubmit,
+    } = useCompletion({
+        api: '/api/message',
+        body: {
+            sender: 'system',
+            chatId: chat?._id
         }
-    }
-
-    const getMessageInput: () => string = () => {
-        const el = document.getElementById('message-input') as HTMLInputElement
-        return el.value;
-    }
+    });
 
     return (
         <section className="flex h-full grow gap-4 flex-col">
@@ -63,12 +43,11 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
                 </div>
             }
             </div>
-            <div className="flex gap-2">
-                <Input id="message-input" placeholder="Type a message" className="bg-gray grow outline-gray" />
-                <Btn content="Send" onClick={() => {
-                    sendMessage(getMessageInput(), 'user', chat?._id as string);
-                }} />
-            </div>
+            <form className="flex gap-2" onSubmit={(e) => {handleSubmit(e)}}>
+                <Input value={input} onChange={handleInputChange} id="message-input" placeholder="Type a message" className="bg-gray grow outline-gray" />
+                <Btn content="Send" disabled={isLoading} type="submit" />
+                <Btn content="Stop" onClick={() => stop} />
+            </form>
         </section>
     )
 }
