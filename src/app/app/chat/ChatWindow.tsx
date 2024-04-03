@@ -35,7 +35,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
 
     const sendMessage = async (content: string, sender: 'user' | 'system', chatId: string) => {
         if (content !== '') {
-            await axiosInstance.post('/message', {content: content, sender: sender, chatId: chatId});
+            console.log(await axiosInstance.post('/message', {content: content, sender: sender, chatId: chatId}));
             getChat(chatId);
         }
     }
