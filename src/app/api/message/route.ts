@@ -37,7 +37,22 @@ export async function POST(req: NextRequest) {
                         stream: true
                     });
                     const stream = OpenAIStream(completion);
-                    return Response.json({message: 'Succesfully sent message'});
+
+                    // Set up the stream listener
+                    stream.on('data', async (data: StreamingTextResponse) => {
+                        // Create a new message document for each new message received from the stream
+                        const newMsg = new Message({content: data.message.content, sender: data.message.role});
+                        await newMsg.save();
+                        // Update the chat document to include the new message's ID
+                        chat.messages.push(newMsg._id);
+                        await chat.save();
+                    });
+
+                    stream.on('error', (error) => {
+                        console.error('Stream error:', error);
+                    });
+
+                    return Response.json({message: 'Successfully sent message and started streaming'});
                 } else {
                     return new Response(new Blob([JSON.stringify({message: 'This chat does not exist'})], {type: 'application/json'}), {status: 404});
                 }
