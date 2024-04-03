@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { NextRequest } from 'next/server';
-import User from '../../../../models/User';
+import {User} from '../../../../models/User';
 import connectDb from '../../../../connect';
 import { Chat } from '../../../../models/Chat';
 

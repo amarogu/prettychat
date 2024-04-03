@@ -3,7 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import 'dotenv/config';
 import { AuthOptions } from 'next-auth';
 import connectDb from '../../../../../connect';
-import User from '../../../../../models/User';
+import {User} from '../../../../../models/User';
 import bcrypt from 'bcrypt';
 
 export const authOptions: AuthOptions = {

@@ -3,6 +3,10 @@ import Btn from "@/app/Btn";
 import Input from "@/app/Input";
 import { IChat } from "../../../../models/Chat";
 import axiosInstance from "../../../../axiosInstance";
+import { IUser } from "../../../../models/User";
+import OpenAI from 'openai';
+import { OpenAIStream } from 'ai';
+import { IMessage } from "../../../../models/Message";
 
 interface ChatWindowProps {
     chat: IChat | null;
@@ -10,6 +14,24 @@ interface ChatWindowProps {
 }
 
 export default function ChatWindow({chat, getChat}: ChatWindowProps) {
+
+    /*
+    const getCompletion = async (key: string, msgs: IMessage[]) => {
+        const openai = new OpenAI({apiKey: key});
+        const completion = await openai.chat.completions.create({
+            model: 'gpt-3.5-turbo',
+            messages: [
+                ...msgs.map((msg) => {
+                    return {
+                        role: msg.sender,
+                        content: msg.content
+                    }
+                })
+            ]
+        });
+        console.log(completion.choices[0].message.content);
+    }
+    */
 
     const sendMessage = async (content: string, sender: 'user' | 'system', chatId: string) => {
         if (content !== '') {

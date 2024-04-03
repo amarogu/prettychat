@@ -25,7 +25,7 @@ export default function Sidebar({chats, createChat, deleteChat, updateChat}: Sid
             </div>
             <Input placeholder="Search" className="outline-gray bg-gray" />
             <div className="grow flex overflow-y-scroll flex-col gap-4">{
-                chats.reverse().map((chat, i) => {
+                chats.map((chat, i) => {
                     const date = new Date(chat.updatedAt);
                     const formattedDate = `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`;
                     return (

@@ -4,6 +4,14 @@ if (mongoose.models.User) {
     mongoose.deleteModel('User');
 }
 
+export interface IUser {
+    _id: string;
+    __v: number;
+    apiKey: string;
+    name: string;
+    password: string;
+}
+
 const saltRounds = 10;
 
 const userSchema = new mongoose.Schema({
@@ -41,5 +49,4 @@ userSchema.pre('save', function(this: any, next: any) {
     }
 });
 
-const User = mongoose.model('User', userSchema);
-export default User;
+export const User = mongoose.model('User', userSchema);
