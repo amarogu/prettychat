@@ -2,43 +2,23 @@ import React, { useState, useEffect } from 'react';
 import Btn from "@/app/Btn";
 import Input from "@/app/Input";
 import { IChat } from "../../../../models/Chat"; // Ensure IMessage is imported
-import { IMessage } from "../../../../models/Message"; // Ensure IMessage is imported
-import { useCompletion } from 'ai/react';
-import { v4 as uuidv4 } from 'uuid';
+import { useChat } from 'ai/react';
 
 interface ChatWindowProps {
     chat: IChat | null;
     getChat: (chatId: string) => void;
 }
 
-export default function ChatWindow({chat, getChat}: ChatWindowProps) {
+export default function ChatWindow({chat}: ChatWindowProps) {
 
-    const {
-        completion,
-        input,
-        stop,
-        isLoading,
-        handleInputChange,
-        handleSubmit,
-    } = useCompletion({
-        api: '/api/message',
-        body: {
-            sender: 'user',
-            chatId: chat?._id
-        },
-        onFinish: () => {
-            if (chat?._id) {
-                getChat(chat._id);
-            }
-        }
-    });
+    const { messages, input, handleInputChange, handleSubmit, isLoading, stop } = useChat({body: {chatId: chat?._id}, api: '/api/message', id: chat?._id});
 
     const shouldDisplayChat = () => {
-        if (chat?.messages.length !== 0) {
-            return chat?.messages.map((message) => (
-                <div key={message._id} className={`${message.sender === 'user' ? 'self-end' : 'self-start'} bg-gray px-4 py-2`}>
+        if (messages.length !== 0) {
+            return messages.map((message) => (
+                <div key={message.id} className={`${message.role === 'user' ? 'self-end' : 'self-start'} bg-gray px-4 py-2`}>
                     <p>{message.content}</p>
-                    <p className="text-body-dark">{message.sender === 'system' ? 'System' : chat.name}</p>
+                    <p className="text-body-dark">{message.role === 'system' ? 'System' : chat?.name}</p>
                 </div>
             ));
         } else {
@@ -56,9 +36,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
             <div className="grow flex flex-col gap-4 overflow-y-scroll justify-start">
                 {shouldDisplayChat()}
             </div>
-            <form className="flex gap-2" onSubmit={(e) => {
-                handleSubmit(e);
-            }}>
+            <form className="flex gap-2" onSubmit={handleSubmit}>
                 <Input value={input} onChange={handleInputChange} id="message-input" placeholder="Type a message" className="bg-gray grow outline-gray" />
                 <Btn content="Send" disabled={isLoading} type="submit" />
                 <Btn content="Stop" onClick={() => stop} />

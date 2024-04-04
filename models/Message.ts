@@ -8,14 +8,14 @@ export interface IMessage {
     __v: number;
     createdAt: string;
     updatedAt: string;
-    sender: 'user' | 'system';
+    sender: 'user' | 'system' | 'assistant';
     content: string;
 }
 
 const messageSchema = new mongoose.Schema({
     sender: {
         type: String,
-        enum: ['user', 'system'],
+        enum: ['user', 'system', 'assistant'],
         required: true
     },
     content: {
