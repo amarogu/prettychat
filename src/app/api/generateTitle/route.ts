@@ -9,7 +9,7 @@ import { User } from "../../../../models/User";
 const shouldGenerateTitle = async (msgs: {role: 'system' | 'assistant' | 'user', content: IMessage['content']}[], openai: OpenAI) => {
     const completion = await openai.chat.completions.create({
         model: 'gpt-4',
-        messages: [{role: 'system', content: 'If the conversation has a topic, output it in keywords. If it does not, output the string false.'}, ...msgs],
+        messages: [{role: 'system', content: 'If the conversation has a topic, output it in a sentence of two words, at maximum. If it does not, output the string false.'}, ...msgs],
         n: 1,
     })
     console.log(completion.choices[0].message.content);
