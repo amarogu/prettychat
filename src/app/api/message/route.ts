@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
-import { Chat } from "../../../../models/Chat";
+import { Chat, IChat } from "../../../../models/Chat";
 import { Message } from "ai/react";
 import { Message as PersistentMsg } from "../../../../models/Message";
 import OpenAI from 'openai';
@@ -18,13 +18,15 @@ export async function POST(req: NextRequest) {
                 if (session.user?.name === chat.name) {
                     // manage db operations
                     const messages = reqBody.messages.map(msg => {
-                        const message = new PersistentMsg({content: msg.content, sender: msg.role})
+                        const message = new PersistentMsg({content: msg.content, role: msg.role, chatId: chat._id})
                         return message;
                     });
-                    await PersistentMsg.insertMany(messages);
                     const messageIds = messages.map(msg => msg._id);
                     chat.messages = messageIds;
+                    // Delete messages that belong to the chat before saving new messages, except for the messages that are in the chat.messages array
                     await chat.save();
+                    await PersistentMsg.insertMany(messages);
+                    await PersistentMsg.deleteMany({chatId: chat._id, _id: {$nin: messageIds}});
 
                     // generate completion
                     // 1 get user's openai key
@@ -33,13 +35,13 @@ export async function POST(req: NextRequest) {
                     const openai = new OpenAI({apiKey: user?.apiKey});
                     const completion = await openai.chat.completions.create({
                         model: 'gpt-3.5-turbo',
-                        messages: messages.map(msg => ({role: msg.sender, content: msg.content})),
+                        messages: messages.map(msg => ({role: msg.role as 'system' | 'assistant' | 'user', content: msg.content})),
                         stream: true
                     })
                     // 3 stream completion
                     const stream = OpenAIStream(completion, {
                         onCompletion: async (res) => {
-                            const message = new PersistentMsg({content: res, sender: 'system'});
+                            const message = new PersistentMsg({content: res, role: 'assistant', chatId: chat._id});
                             await message.save();
                             chat.messages.push(message._id);
                             await chat.save();

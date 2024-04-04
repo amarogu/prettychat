@@ -3,6 +3,8 @@ import Btn from "@/app/Btn";
 import Input from "@/app/Input";
 import { IChat } from "../../../../models/Chat"; // Ensure IMessage is imported
 import { useChat } from 'ai/react';
+import { Message } from 'ai';
+import {v4 as uuidv4} from 'uuid';
 
 interface ChatWindowProps {
     chat: IChat | null;
@@ -11,16 +13,16 @@ interface ChatWindowProps {
 
 export default function ChatWindow({chat}: ChatWindowProps) {
 
-    const { messages, input, handleInputChange, handleSubmit, isLoading, stop } = useChat({body: {chatId: chat?._id}, api: '/api/message', id: chat?._id});
+    const { messages, input, handleInputChange, handleSubmit, isLoading, stop, setMessages } = useChat({body: {chatId: chat?._id}, api: '/api/message', id: chat?._id});
 
     const shouldDisplayChat = () => {
         if (messages.length !== 0) {
-            return messages.map((message) => (
-                <div key={message.id} className={`${message.role === 'user' ? 'self-end' : 'self-start'} bg-gray px-4 py-2`}>
+            return messages.map((message) => {return (
+                <div key={message.id} className={`${message.role === 'user' ? 'self-end ml-8' : 'self-start mr-8'} bg-gray px-4 py-2`}>
                     <p>{message.content}</p>
-                    <p className="text-body-dark">{message.role === 'system' ? 'System' : chat?.name}</p>
+                    <p className="text-body-dark">{message.role === 'assistant' ? 'Assistant' : chat?.name}</p>
                 </div>
-            ));
+            )});
         } else {
             return (
                 <div className="grow flex flex-col justify-center items-center">
@@ -31,6 +33,12 @@ export default function ChatWindow({chat}: ChatWindowProps) {
         }
     }
 
+    useEffect(() => {
+        if (chat) {
+            setMessages(chat.messages.map((msg) => {return {id: msg._id, content: msg.content, role: msg.role, createdAt: new Date(msg.createdAt)}}));
+        }
+    }, [chat])
+
     return (
         <section className="flex h-full grow gap-4 flex-col">
             <div className="grow flex flex-col gap-4 overflow-y-scroll justify-start">
@@ -39,7 +47,7 @@ export default function ChatWindow({chat}: ChatWindowProps) {
             <form className="flex gap-2" onSubmit={handleSubmit}>
                 <Input value={input} onChange={handleInputChange} id="message-input" placeholder="Type a message" className="bg-gray grow outline-gray" />
                 <Btn content="Send" disabled={isLoading} type="submit" />
-                <Btn content="Stop" onClick={() => stop} />
+                <Btn content="Stop" onClick={() => stop()} />
             </form>
         </section>
     );

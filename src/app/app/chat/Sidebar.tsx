@@ -18,7 +18,7 @@ export default function Sidebar({chats, createChat, deleteChat, updateChat}: Sid
     const {data: session} = useSession();
 
     return (
-        <aside className="h-full flex flex-col gap-8 w-2/3 max-w-xs">
+        <aside className="h-full flex shrink-0 flex-col gap-8 w-2/3 max-w-xs">
             <div className="flex justify-between items-center">
                 <h2 className="text-xl font-einaBold">Chats</h2>
                 <button className="text-xl" onClick={createChat}>+</button>

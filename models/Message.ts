@@ -5,23 +5,29 @@ if (mongoose.models.Message) {
 
 export interface IMessage {
     _id: string;
+    chatId: string;
     __v: number;
     createdAt: string;
     updatedAt: string;
-    sender: 'user' | 'system' | 'assistant';
+    role: "function" | "user" | "system" | "assistant" | "data" | "tool";
     content: string;
 }
 
 const messageSchema = new mongoose.Schema({
-    sender: {
+    role: {
         type: String,
-        enum: ['user', 'system', 'assistant'],
+        enum: ['user', 'system', 'assistant', 'data', 'tool', 'function'],
         required: true
     },
     content: {
         type: String,
         required: true,
         maxlength: 10240
+    },
+    chatId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Chat',
+        required: true
     }
 }, {timestamps: true});
 
