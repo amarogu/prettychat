@@ -5,6 +5,7 @@ import { IChat } from "../../../../models/Chat"; // Ensure IMessage is imported
 import { useChat } from 'ai/react';
 import { Message } from 'ai';
 import {v4 as uuidv4} from 'uuid';
+import axiosInstance from '../../../../axiosInstance';
 
 interface ChatWindowProps {
     chat: IChat | null;
@@ -13,7 +14,11 @@ interface ChatWindowProps {
 
 export default function ChatWindow({chat}: ChatWindowProps) {
 
-    const { messages, input, handleInputChange, handleSubmit, isLoading, stop, setMessages } = useChat({body: {chatId: chat?._id}, api: '/api/message', id: chat?._id});
+    const generateTitle = async () => {
+        await axiosInstance.post('/generateTitle', {chatId: chat?._id})
+    }
+
+    const { messages, input, handleInputChange, handleSubmit, isLoading, stop, setMessages } = useChat({body: {chatId: chat?._id}, api: '/api/message', id: chat?._id, onFinish: generateTitle});
 
     const shouldDisplayChat = () => {
         if (messages.length !== 0) {
