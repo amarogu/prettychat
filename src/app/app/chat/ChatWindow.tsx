@@ -66,11 +66,11 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
         <section className="flex h-full grow gap-4 flex-col">
             <div className='flex relative'>
                 <button className='text-lg'>{parseModel(model)}</button>
-                <div className='absolute bottom-0 translate-y-full'>
-                    <ul className='flex flex-col'>
+                <div className='absolute p-4 rounded-sm border-borders/75 border bottom-0 bg-gradient-to-b from-gray/75 to-gray translate-y-[calc(100%+1rem)]'>
+                    <ul className='flex gap-2 flex-col'>
                         {   
                         models.map((model, i) => {
-                            return <li key={i} className='text-lg'>{model}</li>
+                            return <li key={i}><button>{parseModel(model)}</button></li>
                         })
                         }
                     </ul>
