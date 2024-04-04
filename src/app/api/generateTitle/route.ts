@@ -6,13 +6,17 @@ import { IMessage } from "../../../../models/Message";
 import OpenAI from "openai";
 import { User } from "../../../../models/User";
 
-const shouldGenerateTitle = async (msgs: {role: 'system' | 'assistant' | 'user', content: IMessage['content']}[], openai: OpenAI) => {
+const generateTitle = async (msgs: {role: 'system' | 'assistant' | 'user', content: IMessage['content']}[], openai: OpenAI) => {
     const completion = await openai.chat.completions.create({
         model: 'gpt-4',
         messages: [{role: 'system', content: 'If the conversation has a topic, output it in a sentence of two words, at maximum. If it does not, output the string false.'}, ...msgs],
         n: 1,
     })
-    console.log(completion.choices[0].message.content);
+    if (completion.choices[0].message.content !== 'false' && completion.choices[0].message.content !== 'False') {
+        return completion.choices[0].message.content;
+    } else {
+        return 'New chat';
+    }
 }
 
 export async function POST(req: NextRequest) {
@@ -32,12 +36,13 @@ export async function POST(req: NextRequest) {
                     });
                     const user = await User.findOne({name: session.user.name});
                     const openai = new OpenAI({apiKey: user?.apiKey});
-                    /*const completion = await openai.chat.completions.create({
-                        model: 'gpt-3.5-turbo',
-                        messages: [{role: 'system', content: 'Generate a title based on this conversation'}, ...formattedMsgs]
-                    })*/
-                    await shouldGenerateTitle(formattedMsgs, openai);
-                    return Response.json({message: 'Title generated'});
+                    chat.title = await generateTitle(formattedMsgs, openai) ?? 'New chat';
+                    await chat.save();
+                    if (chat.title !== 'New title') {
+                        return Response.json({message: 'Title successfully generated'});
+                    } else {
+                        return Response.json({message: 'Title not generated'});
+                    }
                 } else {
                     return new Response(new Blob([JSON.stringify({message: 'You are not authorized to access or modify this chat'})], {type: 'application/json'}), {status: 403});
                 }

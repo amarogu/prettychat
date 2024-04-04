@@ -12,13 +12,16 @@ interface ChatWindowProps {
     getChat: (chatId: string) => void;
 }
 
-export default function ChatWindow({chat}: ChatWindowProps) {
+export default function ChatWindow({chat, getChat}: ChatWindowProps) {
 
     const generateTitle = async () => {
-        await axiosInstance.post('/generateTitle', {chatId: chat?._id})
+        const res = (await axiosInstance.post('/generateTitle', {chatId: chat?._id})).data as {message: string};
+        if (res.message === 'Title successfully generated' && chat) {
+            getChat(chat?._id);
+        }
     }
 
-    const { messages, input, handleInputChange, handleSubmit, isLoading, stop, setMessages } = useChat({body: {chatId: chat?._id}, api: '/api/message', id: chat?._id, onFinish: generateTitle});
+    const { messages, input, handleInputChange, handleSubmit, isLoading, stop, setMessages } = useChat({body: {chatId: chat?._id}, api: '/api/message', id: chat?._id, onFinish: chat?.title === 'New chat' ? generateTitle : () => {return;}});
 
     const shouldDisplayChat = () => {
         if (messages.length !== 0) {
