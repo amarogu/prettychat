@@ -14,6 +14,8 @@ interface ChatWindowProps {
 
 export default function ChatWindow({chat, getChat}: ChatWindowProps) {
 
+    const [model, setModel] = useState<string>('gpt-3.5-turbo');
+
     const generateTitle = async () => {
         const res = (await axiosInstance.post('/generateTitle', {chatId: chat?._id})).data as {message: string};
         if (res.message === 'Title successfully generated' && chat) {
@@ -47,8 +49,33 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
         }
     }, [chat])
 
+    const parseModel = (model: string) => {
+        switch (model) {
+            case 'gpt-3.5-turbo':
+                return 'GPT-3.5 Turbo';
+            case 'gpt-4':
+                return 'GPT-4';
+            default:
+                return 'GPT-3.5 Turbo';
+        }
+    }
+
+    const models: string[] = ['gpt-3.5-turbo', 'gpt-4'];
+
     return (
         <section className="flex h-full grow gap-4 flex-col">
+            <div className='flex relative'>
+                <button className='text-lg'>{parseModel(model)}</button>
+                <div className='absolute bottom-0 translate-y-full'>
+                    <ul className='flex flex-col'>
+                        {   
+                        models.map((model, i) => {
+                            return <li key={i} className='text-lg'>{model}</li>
+                        })
+                        }
+                    </ul>
+                </div>
+            </div>
             <div className="grow flex flex-col gap-4 overflow-y-scroll justify-start">
                 {shouldDisplayChat()}
             </div>

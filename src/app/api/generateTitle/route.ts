@@ -11,6 +11,7 @@ const generateTitle = async (msgs: {role: 'system' | 'assistant' | 'user', conte
         model: 'gpt-4',
         messages: [{role: 'system', content: 'If the conversation has a topic, output it in a sentence of two words, at maximum. If it does not, output the string false.'}, ...msgs],
         n: 1,
+        max_tokens: 100
     })
     if (completion.choices[0].message.content !== 'false' && completion.choices[0].message.content !== 'False') {
         return completion.choices[0].message.content;
