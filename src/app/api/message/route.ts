@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
                         model: reqBody.model,
                         messages: messages.map(msg => ({role: msg.role as 'system' | 'assistant' | 'user', content: msg.content})),
                         stream: true
-                    })
+                    });
                     // 3 stream completion
                     const stream = OpenAIStream(completion, {
                         onCompletion: async (res) => {
