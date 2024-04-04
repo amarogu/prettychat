@@ -2,8 +2,16 @@ import { getServerSession } from "next-auth";
 import { NextRequest } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { Chat, IChat } from "../../../../models/Chat";
+import { IMessage } from "../../../../models/Message";
 import OpenAI from "openai";
 import { User } from "../../../../models/User";
+
+const shouldGenerateTitle = (msgs: {role: 'system' | 'assistant' | 'user', content: IMessage['content']}[], openai: OpenAI) => {
+    const completion = openai.chat.completions.create({
+        model: 'gpt-3.5-turbo',
+        messages: [{role: 'system', content: 'Check if there is a specific topic to this conversation other than introductions (e.g. hello, etc)'}, ...msgs]
+    })
+}
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
@@ -16,7 +24,7 @@ export async function POST(req: NextRequest) {
                     const populatedChat = await chat.populate('messages') as unknown as IChat;
                     const formattedMsgs = populatedChat.messages.map(msg => {
                         return {
-                            role: msg.role,
+                            role: msg.role as 'system' | 'assistant' | 'user',
                             content: msg.content
                         }
                     });
@@ -24,7 +32,7 @@ export async function POST(req: NextRequest) {
                     const openai = new OpenAI({apiKey: user?.apiKey});
                     const completion = await openai.chat.completions.create({
                         model: 'gpt-3.5-turbo',
-                        messages: [{role: 'system', content: ''}]
+                        messages: [{role: 'system', content: ''}, ...formattedMsgs]
                     })
                 } else {
                     return new Response(new Blob([JSON.stringify({message: 'You are not authorized to access or modify this chat'})], {type: 'application/json'}), {status: 403});
