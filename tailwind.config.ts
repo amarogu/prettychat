@@ -23,7 +23,7 @@ const config: Config = {
         'borders': '#E5E7EB',
         'background': '#0B1121',
         'background-light': '#F5F5F7',
-        "background-light-emphasized": "FFFFFF"
+        "background-light-emphasized": "#FFFFFF"
       },
       fontFamily: {
         einaReg: ['var(--font-eina-reg)'],

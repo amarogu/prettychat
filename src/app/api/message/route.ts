@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
     try {
         if (session && session.user?.name) {
-            const reqBody = await req.json() as { messages: Message[], chatId: string };
+            const reqBody = await req.json() as { messages: Message[], chatId: string, model: string };
             const chat = await Chat.findById(reqBody.chatId); 
             if (chat) {
                 if (session.user?.name === chat.name) {
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
                     const user = await User.findOne({name: session.user.name});
                     const openai = new OpenAI({apiKey: user?.apiKey});
                     const completion = await openai.chat.completions.create({
-                        model: 'gpt-3.5-turbo',
+                        model: reqBody.model,
                         messages: messages.map(msg => ({role: msg.role as 'system' | 'assistant' | 'user', content: msg.content})),
                         stream: true
                     })

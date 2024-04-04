@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Btn from "@/app/Btn";
 import Input from "@/app/Input";
 import { IChat } from "../../../../models/Chat"; // Ensure IMessage is imported
@@ -15,6 +15,9 @@ interface ChatWindowProps {
 export default function ChatWindow({chat, getChat}: ChatWindowProps) {
 
     const [model, setModel] = useState<string>('gpt-3.5-turbo');
+    const [open, setOpen] = useState<boolean>(false);
+    const optionsRef = useRef<HTMLDivElement>(null);
+    const btnRef = useRef<HTMLButtonElement>(null);
 
     const generateTitle = async () => {
         const res = (await axiosInstance.post('/generateTitle', {chatId: chat?._id})).data as {message: string};
@@ -23,7 +26,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
         }
     }
 
-    const { messages, input, handleInputChange, handleSubmit, isLoading, stop, setMessages } = useChat({body: {chatId: chat?._id}, api: '/api/message', id: chat?._id, onFinish: chat?.title === 'New chat' ? generateTitle : () => {return;}});
+    const { messages, input, handleInputChange, handleSubmit, isLoading, stop, setMessages } = useChat({body: {chatId: chat?._id, model: model}, api: '/api/message', id: chat?._id, onFinish: chat?.title === 'New chat' ? generateTitle : () => {return;}});
 
     const shouldDisplayChat = () => {
         if (messages.length !== 0) {
@@ -55,22 +58,59 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
                 return 'GPT-3.5 Turbo';
             case 'gpt-4':
                 return 'GPT-4';
+            case 'gpt-4-turbo-preview':
+                return 'GPT-4 Turbo Preview';
+            case 'gpt-4-1106-vision-preview':
+                return 'GPT-4 1106 Vision Preview';
+            case 'gpt-4-1106-preview':
+                return 'GPT-4 1106 Preview';
+            case 'gpt-4-0613':
+                return 'GPT-4 0613';
+            case 'gpt-4-0125-preview':
+                return 'GPT-4 0125 Preview';
+            case 'gpt-3.5-turbo-16k-0613':
+                return 'GPT-3.5 Turbo 16k 0613';
+            case 'gpt-3.5-turbo-16k':
+                return 'GPT-3.5 Turbo 16k';
+            case 'gpt-3.5-turbo-1106':
+                return 'GPT-3.5 Turbo 1106';
+            case 'gpt-3.5-turbo-0613':
+                return 'GPT-3.5 Turbo 0613';
+            case 'gpt-3.5-turbo-0301':
+                return 'GPT-3.5 Turbo 0301';
+            case 'gpt-3.5-turbo-0125':
+                return 'GPT-3.5 Turbo 0125';
             default:
                 return 'GPT-3.5 Turbo';
         }
     }
 
-    const models: string[] = ['gpt-3.5-turbo', 'gpt-4'];
+    const models: string[] = ['gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo-preview', 'gpt-4-1106-vision-preview', 'gpt-4-1106-preview', 'gpt-4-0613', 'gpt-4-0125-preview', 'gpt-3.5-turbo-16k-0613', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-1106', 'gpt-3.5-turbo-0613', 'gpt-3.5-turbo-0301', 'gpt-3.5-turbo-0125'];
+
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (optionsRef.current && !optionsRef.current.contains(e.target as Node) && btnRef.current && !btnRef.current.contains(e.target as Node)) {
+                setOpen(false);
+            }
+        }
+        document.addEventListener('click', handleClickOutside);
+        return () => document.removeEventListener('click', handleClickOutside);
+    }, [optionsRef, btnRef])
 
     return (
         <section className="flex h-full grow gap-4 flex-col">
             <div className='flex relative'>
-                <button className='text-lg'>{parseModel(model)}</button>
-                <div className='absolute p-4 rounded-sm border-borders/75 border bottom-0 bg-gradient-to-b from-gray/75 to-gray translate-y-[calc(100%+1rem)]'>
+                <button className='text-lg' ref={btnRef} onClick={() => setOpen(!open)}>{parseModel(model)}</button>
+                <div ref={optionsRef} className={`absolute ${open ? 'block' : 'hidden'} p-4 rounded-sm border-borders/75 border bottom-0 bg-gradient-to-b from-gray/75 to-gray translate-y-[calc(100%+1rem)]`}>
                     <ul className='flex gap-2 flex-col'>
                         {   
-                        models.map((model, i) => {
-                            return <li key={i}><button>{parseModel(model)}</button></li>
+                        models.map((m, i) => {
+                            return (
+                                <li className='flex justify-between gap-4 items-center' key={i}>
+                                    <button onClick={() => setModel(m)}>{parseModel(m)}</button>
+                                    {model === m ? <div className='w-2 h-2 rounded-full bg-background-light-emphasized'></div> : null}
+                                </li>
+                            )
                         })
                         }
                     </ul>
