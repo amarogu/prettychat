@@ -47,7 +47,7 @@ export default function Chat() {
     };
 
     const findChats = async (search: string) => {
-        const matches = initialChats.map(chat => chat.title.toLowerCase().includes(search) || chat.title.includes(search) ? chat : null).filter(chat => chat !== null);
+        const matches = initialChats.map(chat => chat.title.toLowerCase().includes(search) || chat.title.includes(search) || chat.title.toUpperCase().includes(search) ? chat : null).filter(chat => chat !== null);
         if (search === '') {
             const chats = await axiosInstance.get('/chats');
             setChats(chats.data);

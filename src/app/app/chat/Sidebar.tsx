@@ -7,6 +7,8 @@ import Delete from "../../../../public/delete.svg";
 import AccountDark from '../../../../public/account_circle_dark.svg';
 import DeleteDark from '../../../../public/delete_dark.svg';
 import { useEffect, useState } from "react";
+import Search from "../../../../public/search.svg";
+import SearchDark from '../../../../public/search_dark.svg';
 
 interface SidebarProps {
     chats: IChat[];
@@ -33,7 +35,7 @@ export default function Sidebar({chats, createChat, deleteChat, updateChat, find
                 <h2 className="text-xl font-einaBold">Chats</h2>
                 <button className="text-xl" onClick={createChat}>+</button>
             </div>
-            <Input placeholder="Search" onChange={e => findChats(e.target.value)} />
+            <Input id="search-field" placeholder="Search" icon={<Image width={16} height={16} src={isDarkMode ? SearchDark : Search} alt="Search" />} onChange={e => findChats(e.target.value)} />
             <div className="grow flex overflow-y-scroll flex-col gap-4">{
                 chats.map((chat, i) => {
                     const date = new Date(chat.updatedAt);
