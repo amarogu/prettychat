@@ -159,7 +159,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
             <div className='flex justify-between items-center relative'>
                 <button className='text-lg' ref={btnRef} onClick={() => setOpen(!open)}>{parseModel(model)}</button>
                 <button ref={optsBtnRef} onClick={() => setOptsWindow(!optsWindow)}><Image width={16} height={16} src={isDarkMode ? SettingsDark : Settings} alt='Options' /></button>
-                <div ref={modelsRef} className={`absolute backdrop-blur-[2px] ${open ? 'block' : 'hidden'} p-4 rounded-sm border-primary-300/50 dark:border-dark-primary-300/50 border bottom-0 bg-gradient-to-b from-bg-300/75 dark:from-dark-bg-300/75 to-bg-300 dark:to-dark-bg-300 translate-y-[calc(100%+1rem)]`}>
+                <div ref={modelsRef} className={`absolute z-10 backdrop-blur-[2px] ${open ? 'block' : 'hidden'} p-4 rounded-sm border-primary-300/50 dark:border-dark-primary-300/50 border bottom-0 bg-gradient-to-b from-bg-300/75 dark:from-dark-bg-300/75 to-bg-300 dark:to-dark-bg-300 translate-y-[calc(100%+1rem)]`}>
                     <ul className='flex gap-2 flex-col'>
                         {   
                         models.map((m, i) => {
