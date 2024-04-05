@@ -42,7 +42,9 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
         }
     };
 
-    const { messages, input, handleInputChange, handleSubmit, isLoading, stop, setMessages } = useChat({body: {chatId: chat?._id, model: model}, api: '/api/message', id: chat?._id, onFinish: chat?.title === 'New chat' ? generateTitle : () => {return;}});
+    const [useMd, setUseMd] = useState<boolean>(true);
+
+    const { messages, input, handleInputChange, handleSubmit, isLoading, stop, setMessages } = useChat({body: {chatId: chat?._id, model: model, useMd: useMd}, api: '/api/message', id: chat?._id, onFinish: chat?.title === 'New chat' ? generateTitle : () => {return;}});
 
     const shouldDisplayChat = () => {
         if (messages.length !== 0) {
@@ -144,8 +146,6 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
         return () => document.removeEventListener('click', handleClickOutside);
     }, [modelsRef, btnRef, optsRef, optsBtnRef]);
 
-    const [useMd, setUseMd] = useState<boolean>(true);
-
     const chatEndRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
@@ -159,14 +159,14 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
             <div className='flex justify-between items-center relative'>
                 <button className='text-lg' ref={btnRef} onClick={() => setOpen(!open)}>{parseModel(model)}</button>
                 <button ref={optsBtnRef} onClick={() => setOptsWindow(!optsWindow)}><Image width={16} height={16} src={isDarkMode ? SettingsDark : Settings} alt='Options' /></button>
-                <div ref={modelsRef} className={`absolute backdrop-blur-[2px] ${open ? 'block' : 'hidden'} p-4 rounded-sm border-primary-300/50 border bottom-0 bg-gradient-to-b from-bg-300/75 to-bg-300 translate-y-[calc(100%+1rem)]`}>
+                <div ref={modelsRef} className={`absolute backdrop-blur-[2px] ${open ? 'block' : 'hidden'} p-4 rounded-sm border-primary-300/50 dark:border-dark-primary-300/50 border bottom-0 bg-gradient-to-b from-bg-300/75 dark:from-dark-bg-300/75 to-bg-300 dark:to-dark-bg-300 translate-y-[calc(100%+1rem)]`}>
                     <ul className='flex gap-2 flex-col'>
                         {   
                         models.map((m, i) => {
                             return (
                                 <li className='flex justify-between gap-4 items-center' key={i}>
                                     <button onClick={() => setModel(m)}>{parseModel(m)}</button>
-                                    {model === m ? <div className='w-1 h-1 rounded-full bg-text-100'></div> : null}
+                                    {model === m ? <div className='w-1 h-1 rounded-full bg-text-100 dark:bg-dark-text-100'></div> : null}
                                 </li>
                             )
                         })
@@ -183,13 +183,13 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
                 <Btn content="Send" disabled={isLoading} type="submit" />
                 <Btn content="Stop" onClick={() => stop()} />
             </form>
-            <div ref={optsRef} className={`${optsWindow ? 'block' : 'hidden'} absolute p-4 rounded-sm bg-gradient-to-b backdrop-blur-[2px] border-primary-300/50 border from-bg-300/75 to-bg-300 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-4`}>
+            <div ref={optsRef} className={`${optsWindow ? 'block' : 'hidden'} absolute p-4 rounded-sm bg-gradient-to-b backdrop-blur-[2px] border-primary-300/50 dark:border-dark-primary-300/50 border from-bg-300/75 dark:from-dark-bg-300/75 to-bg-300 dark:to-dark-bg-300 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-4`}>
                 <h2 className='text-lg font-einaBold'>Options</h2>
                 <div className='flex flex-col gap-4'>
                     <button onClick={() => setUseMd(!useMd)} className='flex justify-between items-center gap-4'>
                         <p>Use markdown for formatting</p>
-                        <div className={`${useMd ? 'bg-primary-200' : 'bg-primary-100'} w-8 h-4 relative rounded-full`}>
-                            <span className={`h-2 w-2 inline-block absolute ${useMd ? 'right-0' : 'left-0'} -translate-y-1/2 mx-1 top-1/2  rounded-full bg-bg-300`}></span>
+                        <div className={`${useMd ? 'bg-primary-200 dark:bg-dark-primary-300' : 'bg-primary-100 dark:bg-dark-primary-200'} w-8 h-4 relative rounded-full`}>
+                            <span className={`h-2 w-2 inline-block absolute ${useMd ? 'right-0 dark:bg-dark-bg-300' : 'left-0'} -translate-y-1/2 mx-1 top-1/2  rounded-full bg-bg-300`}></span>
                         </div>
                     </button>
                 </div>

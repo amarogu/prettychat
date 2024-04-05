@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
     try {
         if (session && session.user?.name) {
-            const reqBody = await req.json() as { messages: Message[], chatId: string, model: string };
+            const reqBody = await req.json() as { messages: Message[], chatId: string, model: string, useMd: boolean };
             const chat = await Chat.findById(reqBody.chatId); 
             if (chat) {
                 if (session.user?.name === chat.name) {
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
                     const openai = new OpenAI({apiKey: user?.apiKey});
                     const completion = await openai.chat.completions.create({
                         model: reqBody.model,
-                        messages: messages.map(msg => ({role: msg.role as 'system' | 'assistant' | 'user', content: msg.content})),
+                        messages: reqBody.useMd ? [{role: 'system', content: 'Respond to the user in Markdown notation'}, ...messages.map(msg => ({role: msg.role as 'system' | 'assistant' | 'user', content: msg.content}))] : messages.map(msg => ({role: msg.role as 'system' | 'assistant' | 'user', content: msg.content})),
                         stream: true
                     });
                     // 3 stream completion
