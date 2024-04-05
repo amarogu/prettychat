@@ -18,7 +18,8 @@
 
 pre:has(> code) {
   border: solid 1px;
-  border-color: #E5E7EB;
+  border-color: rgba(229, 231, 235, 0.75);
   padding: 1rem;
-  border-radius: ;
+  border-radius: 0.125rem;
+  margin: 0.5rem 0;
 }

@@ -36,7 +36,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
     const shouldDisplayChat = () => {
         if (messages.length !== 0) {
             return messages.map((message) => {return (
-                <div key={message.id} className={`${message.role === 'user' ? 'self-end ml-8' : 'self-start mr-8'} bg-gray px-4 py-2`}>
+                <div key={message.id} className={`${message.role === 'user' ? 'self-end ml-8' : 'self-start mr-8'} bg-gray flex flex-col gap-2 px-4 py-2`}>
                     {useMd ? <Markdown>{message.content}</Markdown> : <p>{message.content}</p>}
                     <p className="text-body-dark">{message.role === 'assistant' ? 'Assistant' : chat?.name}</p>
                 </div>
