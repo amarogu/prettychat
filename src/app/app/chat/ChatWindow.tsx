@@ -6,7 +6,7 @@ import { useChat } from 'ai/react';
 import axiosInstance from '../../../../axiosInstance';
 import Settings from '../../../../public/settings.svg';
 import Image from 'next/image';
-import { Switch } from '@headlessui/react';
+import Markdown from 'react-markdown';
 
 interface ChatWindowProps {
     chat: IChat | null;
@@ -37,7 +37,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
         if (messages.length !== 0) {
             return messages.map((message) => {return (
                 <div key={message.id} className={`${message.role === 'user' ? 'self-end ml-8' : 'self-start mr-8'} bg-gray px-4 py-2`}>
-                    <p>{message.content}</p>
+                    {useMd ? <Markdown>{message.content}</Markdown> : <p>{message.content}</p>}
                     <p className="text-body-dark">{message.role === 'assistant' ? 'Assistant' : chat?.name}</p>
                 </div>
             )});
@@ -140,7 +140,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
                 <div className='flex flex-col gap-4'>
                     <button onClick={() => setUseMd(!useMd)} className='flex justify-between items-center gap-4'>
                         <p>Use markdown for formatting</p>
-                        <div className='bg-body-dark w-8 h-4 relative rounded-full'>
+                        <div className={`${useMd ? 'bg-accent' : 'bg-body-dark'} w-8 h-4 relative rounded-full`}>
                             <span className={`h-2 w-2 inline-block absolute ${useMd ? 'right-0' : 'left-0'} -translate-y-1/2 mx-1 top-1/2  rounded-full bg-white`}></span>
                         </div>
                     </button>
