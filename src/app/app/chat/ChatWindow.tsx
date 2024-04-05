@@ -6,6 +6,7 @@ import { useChat } from 'ai/react';
 import axiosInstance from '../../../../axiosInstance';
 import Settings from '../../../../public/settings.svg';
 import Image from 'next/image';
+import { Switch } from '@headlessui/react';
 
 interface ChatWindowProps {
     chat: IChat | null;
@@ -28,7 +29,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
         if (res.message === 'Title successfully generated' && chat) {
             getChat(chat?._id);
         }
-    }
+    };
 
     const { messages, input, handleInputChange, handleSubmit, isLoading, stop, setMessages } = useChat({body: {chatId: chat?._id, model: model}, api: '/api/message', id: chat?._id, onFinish: chat?.title === 'New chat' ? generateTitle : () => {return;}});
 
@@ -48,13 +49,13 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
                 </div>
             );
         }
-    }
+    };
 
     useEffect(() => {
         if (chat) {
             setMessages(chat.messages.map((msg) => {return {id: msg._id, content: msg.content, role: msg.role, createdAt: new Date(msg.createdAt)}}));
         }
-    }, [chat])
+    }, [chat]);
 
     const parseModel = (model: string) => {
         switch (model) {
@@ -87,7 +88,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
             default:
                 return 'GPT-3.5 Turbo';
         }
-    }
+    };
 
     const models: string[] = ['gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo-preview', 'gpt-4-1106-vision-preview', 'gpt-4-1106-preview', 'gpt-4-0613', 'gpt-4-0125-preview', 'gpt-3.5-turbo-16k-0613', 'gpt-3.5-turbo-16k', 'gpt-3.5-turbo-1106', 'gpt-3.5-turbo-0613', 'gpt-3.5-turbo-0301', 'gpt-3.5-turbo-0125'];
 
@@ -102,7 +103,9 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
         }
         document.addEventListener('click', handleClickOutside);
         return () => document.removeEventListener('click', handleClickOutside);
-    }, [modelsRef, btnRef, optsRef, optsBtnRef])
+    }, [modelsRef, btnRef, optsRef, optsBtnRef]);
+
+    const [useMd, setUseMd] = useState<boolean>(true);
 
     return (
         <section className="flex h-full grow gap-4 flex-col">
@@ -132,8 +135,16 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
                 <Btn content="Send" disabled={isLoading} type="submit" />
                 <Btn content="Stop" onClick={() => stop()} />
             </form>
-            <div ref={optsRef} className={`${optsWindow ? 'block' : 'hidden'} absolute p-4 rounded-sm bg-gradient-to-b backdrop-blur-[2px] border-borders/50 border from-gray/75 to-gray top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}>
+            <div ref={optsRef} className={`${optsWindow ? 'block' : 'hidden'} absolute p-4 rounded-sm bg-gradient-to-b backdrop-blur-[2px] border-borders/50 border from-gray/75 to-gray top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-4`}>
                 <h2 className='text-lg font-einaBold'>Options</h2>
+                <div className='flex flex-col gap-4'>
+                    <button onClick={() => setUseMd(!useMd)} className='flex justify-between items-center gap-4'>
+                        <p>Use markdown for formatting</p>
+                        <div className='bg-body-dark w-8 h-4 relative rounded-full'>
+                            <span className={`h-2 w-2 inline-block absolute ${useMd ? 'right-0' : 'left-0'} -translate-y-1/2 mx-1 top-1/2  rounded-full bg-white`}></span>
+                        </div>
+                    </button>
+                </div>
             </div>
         </section>
     );
