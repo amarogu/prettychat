@@ -8,7 +8,7 @@ import Settings from '../../../../public/settings.svg';
 import Image from 'next/image';
 import Markdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface ChatWindowProps {
     chat: IChat | null;
@@ -38,7 +38,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
     const shouldDisplayChat = () => {
         if (messages.length !== 0) {
             return messages.map((message) => {return (
-                <div key={message.id} className={`${message.role === 'user' ? 'self-end ml-8' : 'self-start mr-8'} bg-gray flex flex-col gap-2 p-4`}>
+                <div key={message.id} className={`${message.role === 'user' ? 'self-end ml-8' : 'self-start mr-8'} bg-bg-200 flex flex-col gap-2 p-4`}>
                     {useMd ? 
                     <Markdown
                         children={message.content}
@@ -47,7 +47,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
                             const {children, className, node, ...rest} = props
                             const match = /language-(\w+)/.exec(className || '')
                             return match ? (
-                                <SyntaxHighlighter PreTag='div' style={atomDark} language={match[1]} children={String(children).replace(/\n$/, '')} />
+                                <SyntaxHighlighter PreTag='div' style={prism} language={match[1]} children={String(children).replace(/\n$/, '')} />
                             ) : (
                             <code {...rest} className={className}>
                                 {children}
