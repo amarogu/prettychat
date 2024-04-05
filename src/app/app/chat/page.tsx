@@ -13,6 +13,8 @@ export default function Chat() {
 
     const [currentChat, setCurrentChat] = useState<IChat | null>(null);
 
+    const [initialChats, setInitialChats] = useState<IChat[]>([]);
+
     const updateChat = (chat: IChat) => {
         setCurrentChat(chat);
     }
@@ -42,12 +44,25 @@ export default function Chat() {
             }
         }
         ));
+    };
+
+    const findChats = async (search: string) => {
+        const matches = initialChats.map(chat => chat.title.toLowerCase().includes(search) || chat.title.includes(search) ? chat : null).filter(chat => chat !== null);
+        if (search === '') {
+            const chats = await axiosInstance.get('/chats');
+            setChats(chats.data);
+        } else if (matches.length > 0) {
+            setChats(matches as IChat[]);
+        } else {
+            setChats([]);
+        }
     }
 
     useEffect(() => {
         const fetchChats = async () => {
             const chats = await axiosInstance.get('/chats');
             setChats(chats.data);
+            setInitialChats(chats.data);
             setCurrentChat(chats.data[0]);
         }
         fetchChats();
@@ -55,7 +70,7 @@ export default function Chat() {
 
     return (
         <main id="main" className="p-8 flex relative gap-8 h-screen">
-            <Sidebar chats={chats} updateChat={updateChat} createChat={createChat} deleteChat={deleteChat} />
+            <Sidebar chats={chats} findChats={findChats} updateChat={updateChat} createChat={createChat} deleteChat={deleteChat} />
             <ChatWindow chat={currentChat} getChat={getChat} />
         </main>
     )

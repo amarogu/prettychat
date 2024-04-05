@@ -13,9 +13,10 @@ interface SidebarProps {
     updateChat: (chat: IChat) => void;
     createChat: () => void;
     deleteChat: (chatID: string) => Promise<IChat[]>;
+    findChats: (search: string) => void;
 }
 
-export default function Sidebar({chats, createChat, deleteChat, updateChat}: SidebarProps) {
+export default function Sidebar({chats, createChat, deleteChat, updateChat, findChats}: SidebarProps) {
 
     const {data: session} = useSession();
     const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
@@ -24,7 +25,7 @@ export default function Sidebar({chats, createChat, deleteChat, updateChat}: Sid
         if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
             setIsDarkMode(true);
         }
-    }, [])
+    }, []);
 
     return (
         <aside className="h-full flex shrink-0 flex-col gap-8 w-2/3 max-w-xs">
@@ -32,7 +33,7 @@ export default function Sidebar({chats, createChat, deleteChat, updateChat}: Sid
                 <h2 className="text-xl font-einaBold">Chats</h2>
                 <button className="text-xl" onClick={createChat}>+</button>
             </div>
-            <Input placeholder="Search" />
+            <Input placeholder="Search" onChange={e => findChats(e.target.value)} />
             <div className="grow flex overflow-y-scroll flex-col gap-4">{
                 chats.map((chat, i) => {
                     const date = new Date(chat.updatedAt);
