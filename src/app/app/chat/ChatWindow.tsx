@@ -6,6 +6,7 @@ import { useChat } from 'ai/react';
 import axiosInstance from '../../../../axiosInstance';
 import Settings from '../../../../public/settings.svg';
 import Image from 'next/image';
+import { createPortal } from 'react-dom';
 
 interface ChatWindowProps {
     chat: IChat | null;
@@ -16,6 +17,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
 
     const [model, setModel] = useState<string>('gpt-3.5-turbo');
     const [open, setOpen] = useState<boolean>(false);
+    const [areOptionsOpen, setAreOptionsOpen] = useState<boolean>(false);
     const optionsRef = useRef<HTMLDivElement>(null);
     const btnRef = useRef<HTMLButtonElement>(null);
 
@@ -102,7 +104,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
             <div className='flex justify-between items-center relative'>
                 <button className='text-lg' ref={btnRef} onClick={() => setOpen(!open)}>{parseModel(model)}</button>
                 <button><Image width={16} height={16} src={Settings} alt='Options' /></button>
-                <div ref={optionsRef} className={`absolute ${open ? 'block' : 'hidden'} p-4 rounded-sm border-borders/75 border bottom-0 bg-gradient-to-b from-gray/75 to-gray translate-y-[calc(100%+1rem)]`}>
+                <div ref={optionsRef} className={`absolute backdrop-blur-[2px] ${open ? 'block' : 'hidden'} p-4 rounded-sm border-borders/75 border bottom-0 bg-gradient-to-b from-gray/75 to-gray translate-y-[calc(100%+1rem)]`}>
                     <ul className='flex gap-2 flex-col'>
                         {   
                         models.map((m, i) => {
@@ -125,6 +127,9 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
                 <Btn content="Send" disabled={isLoading} type="submit" />
                 <Btn content="Stop" onClick={() => stop()} />
             </form>
+            <div className='absolute'>
+                <h2>Options</h2>
+            </div>
         </section>
     );
 }
