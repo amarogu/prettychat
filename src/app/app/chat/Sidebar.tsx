@@ -1,10 +1,12 @@
-'use client';
 import Input from "@/app/Input";
 import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 import Account from '../../../../public/account_circle.svg';
 import { IChat } from "../../../../models/Chat";
 import Delete from "../../../../public/delete.svg";
+import AccountDark from '../../../../public/account_circle_dark.svg';
+import DeleteDark from '../../../../public/delete_dark.svg';
+import { useEffect, useState } from "react";
 
 interface SidebarProps {
     chats: IChat[];
@@ -16,6 +18,13 @@ interface SidebarProps {
 export default function Sidebar({chats, createChat, deleteChat, updateChat}: SidebarProps) {
 
     const {data: session} = useSession();
+    const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            setIsDarkMode(true);
+        }
+    }, [])
 
     return (
         <aside className="h-full flex shrink-0 flex-col gap-8 w-2/3 max-w-xs">
@@ -34,7 +43,7 @@ export default function Sidebar({chats, createChat, deleteChat, updateChat}: Sid
                                 <div className="flex items-center justify-between">
                                     <p>{chat.title}</p>
                                     <button className="hover:scale-125" onClick={async (e) => {e.stopPropagation(); const updatedChats = await deleteChat(chat._id); updateChat(updatedChats[0])}}>
-                                        <Image src={Delete} width={16} alt="Delete chat" />
+                                        <Image src={isDarkMode ? DeleteDark : Delete} width={16} alt="Delete chat" />
                                     </button>
                                 </div>
                                 <p className="text-body-dark">{formattedDate}</p>
@@ -46,7 +55,7 @@ export default function Sidebar({chats, createChat, deleteChat, updateChat}: Sid
             <div className="flex p-4 rounded-sm bg-bg-200 dark:bg-dark-bg-200">
                 <div className="flex items-start flex-col gap-2">
                     <div className="flex gap-2 items-center">
-                        <Image src={Account} width={16} alt="Profile placeholder image" />
+                        <Image src={isDarkMode ? AccountDark : Account} width={16} alt="Profile placeholder image" />
                         <p>{session?.user?.name}</p>
                     </div>
                     <button className="text-body-dark" onClick={() => signOut()}>Log out</button>

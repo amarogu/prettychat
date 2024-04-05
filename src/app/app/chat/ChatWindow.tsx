@@ -5,10 +5,11 @@ import { IChat } from "../../../../models/Chat"; // Ensure IMessage is imported
 import { useChat } from 'ai/react';
 import axiosInstance from '../../../../axiosInstance';
 import Settings from '../../../../public/settings.svg';
+import SettingsDark from '../../../../public/settings_dark.svg';
 import Image from 'next/image';
 import Markdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { prism, materialDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface ChatWindowProps {
     chat: IChat | null;
@@ -16,6 +17,14 @@ interface ChatWindowProps {
 }
 
 export default function ChatWindow({chat, getChat}: ChatWindowProps) {
+
+    const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            setIsDarkMode(true);
+        }
+    }, []);
 
     const [model, setModel] = useState<string>('gpt-3.5-turbo');
     const [open, setOpen] = useState<boolean>(false);
@@ -47,7 +56,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
                             const {children, className, node, ...rest} = props
                             const match = /language-(\w+)/.exec(className || '')
                             return match ? (
-                                <SyntaxHighlighter PreTag='div' style={prism} language={match[1]} children={String(children).replace(/\n$/, '')} />
+                                <SyntaxHighlighter PreTag='div' style={isDarkMode ? materialDark : prism} language={match[1]} children={String(children).replace(/\n$/, '')} />
                             ) : (
                             <code {...rest} className={className}>
                                 {children}
@@ -149,7 +158,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
         <section className="flex h-full grow gap-4 flex-col">
             <div className='flex justify-between items-center relative'>
                 <button className='text-lg' ref={btnRef} onClick={() => setOpen(!open)}>{parseModel(model)}</button>
-                <button ref={optsBtnRef} onClick={() => setOptsWindow(!optsWindow)}><Image width={16} height={16} src={Settings} alt='Options' /></button>
+                <button ref={optsBtnRef} onClick={() => setOptsWindow(!optsWindow)}><Image width={16} height={16} src={isDarkMode ? SettingsDark : Settings} alt='Options' /></button>
                 <div ref={modelsRef} className={`absolute backdrop-blur-[2px] ${open ? 'block' : 'hidden'} p-4 rounded-sm border-primary-300/50 border bottom-0 bg-gradient-to-b from-bg-300/75 to-bg-300 translate-y-[calc(100%+1rem)]`}>
                     <ul className='flex gap-2 flex-col'>
                         {   
