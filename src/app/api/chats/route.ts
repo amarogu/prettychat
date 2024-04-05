@@ -11,7 +11,7 @@ export async function GET() {
             await connectDb();
             const chats = await Chat.find({name: session.user?.name});
             const populatedChats = await Chat.populate(chats, 'messages');
-            return Response.json(populatedChats);
+            return Response.json(populatedChats.reverse());
         } else {
             return new Response(new Blob([JSON.stringify({message: 'Unauthenticated'})], {type: 'application/json'}), {status: 401});
         }

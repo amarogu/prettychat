@@ -21,7 +21,7 @@ export default function Chat() {
         await axiosInstance.get('/createChat');
         const chats = await axiosInstance.get('/chats');
         setChats(chats.data);
-        setCurrentChat(chats.data[chats.data.length - 1]);
+        setCurrentChat(chats.data[0]);
     }
 
     const deleteChat = async (chatID: string) => {

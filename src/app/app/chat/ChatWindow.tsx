@@ -3,9 +3,9 @@ import Btn from "@/app/Btn";
 import Input from "@/app/Input";
 import { IChat } from "../../../../models/Chat"; // Ensure IMessage is imported
 import { useChat } from 'ai/react';
-import { Message } from 'ai';
-import {v4 as uuidv4} from 'uuid';
 import axiosInstance from '../../../../axiosInstance';
+import Settings from '../../../../public/settings.svg';
+import Image from 'next/image';
 
 interface ChatWindowProps {
     chat: IChat | null;
@@ -99,8 +99,9 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
 
     return (
         <section className="flex h-full grow gap-4 flex-col">
-            <div className='flex relative'>
+            <div className='flex justify-between items-center relative'>
                 <button className='text-lg' ref={btnRef} onClick={() => setOpen(!open)}>{parseModel(model)}</button>
+                <button><Image width={16} height={16} src={Settings} alt='Options' /></button>
                 <div ref={optionsRef} className={`absolute ${open ? 'block' : 'hidden'} p-4 rounded-sm border-borders/75 border bottom-0 bg-gradient-to-b from-gray/75 to-gray translate-y-[calc(100%+1rem)]`}>
                     <ul className='flex gap-2 flex-col'>
                         {   
