@@ -54,7 +54,7 @@ export default function Chat() {
     }, [session?.user?.name]);
 
     return (
-        <main id="main" className="p-8 flex gap-8 h-screen">
+        <main id="main" className="p-8 flex relative gap-8 h-screen">
             <Sidebar chats={chats} updateChat={updateChat} createChat={createChat} deleteChat={deleteChat} />
             <ChatWindow chat={currentChat} getChat={getChat} />
         </main>
