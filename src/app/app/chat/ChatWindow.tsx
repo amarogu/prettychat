@@ -179,7 +179,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
                 <div ref={chatEndRef}></div>
             </div>
             <form className="flex gap-2" onSubmit={handleSubmit}>
-                <Input value={input} onChange={handleInputChange} id="message-input" placeholder="Type a message" className="grow outline-bg-300 dark:outline-dark-bg-300 bg-bg-200 dark:bg-dark-bg-200" />
+                <Input type='textarea' value={input} onChange={handleInputChange} id="message-input" placeholder="Type a message" className="grow outline-bg-300 dark:outline-dark-bg-300 bg-bg-200 dark:bg-dark-bg-200" />
                 <Btn content="Send" disabled={isLoading} type="submit" />
                 <Btn content="Stop" onClick={() => stop()} />
             </form>
