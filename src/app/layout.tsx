@@ -25,7 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${einaReg.variable} ${einaSemi.variable} ${einaBold.variable} font-einaReg dark:text-body-dark bg-background text-sm`}>
+      <body className={`${einaReg.variable} ${einaSemi.variable} ${einaBold.variable} font-einaReg text-text-100 bg-bg-100 text-sm`}>
         <AuthProvider>
           {children}
         </AuthProvider>
