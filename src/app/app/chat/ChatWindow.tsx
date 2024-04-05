@@ -7,6 +7,7 @@ import axiosInstance from '../../../../axiosInstance';
 import Settings from '../../../../public/settings.svg';
 import Image from 'next/image';
 import Markdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 
 interface ChatWindowProps {
     chat: IChat | null;
@@ -36,8 +37,24 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
     const shouldDisplayChat = () => {
         if (messages.length !== 0) {
             return messages.map((message) => {return (
-                <div key={message.id} className={`${message.role === 'user' ? 'self-end ml-8' : 'self-start mr-8'} bg-gray flex flex-col gap-2 px-4 py-2`}>
-                    {useMd ? <Markdown>{message.content}</Markdown> : <p>{message.content}</p>}
+                <div key={message.id} className={`${message.role === 'user' ? 'self-end ml-8' : 'self-start mr-8'} bg-gray flex flex-col gap-2 p-4`}>
+                    {useMd ? 
+                    <Markdown
+                        children={message.content}
+                        components={{
+                        code(props) {
+                            const {children, className, node, ...rest} = props
+                            const match = /language-(\w+)/.exec(className || '')
+                            return match ? (
+                                <SyntaxHighlighter language={match[1]} children={String(children).replace(/\n$/, '')} />
+                            ) : (
+                            <code {...rest} className={className}>
+                                {children}
+                            </code>
+                            )
+                        }
+                        }}
+                    /> : <p>{message.content}</p>}
                     <p className="text-body-dark">{message.role === 'assistant' ? 'Assistant' : chat?.name}</p>
                 </div>
             )});
@@ -107,6 +124,14 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
 
     const [useMd, setUseMd] = useState<boolean>(true);
 
+    const chatEndRef = useRef<HTMLDivElement>(null);
+
+    const scrollToBottom = () => {
+        chatEndRef.current?.scrollIntoView();
+    };
+
+    useEffect(scrollToBottom);
+
     return (
         <section className="flex h-full grow gap-4 flex-col">
             <div className='flex justify-between items-center relative'>
@@ -129,6 +154,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
             </div>
             <div className="grow flex flex-col gap-4 overflow-y-scroll justify-start">
                 {shouldDisplayChat()}
+                <div ref={chatEndRef}></div>
             </div>
             <form className="flex gap-2" onSubmit={handleSubmit}>
                 <Input value={input} onChange={handleInputChange} id="message-input" placeholder="Type a message" className="bg-gray grow outline-gray" />
