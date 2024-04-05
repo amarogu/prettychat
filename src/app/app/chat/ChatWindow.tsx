@@ -8,6 +8,7 @@ import Settings from '../../../../public/settings.svg';
 import Image from 'next/image';
 import Markdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface ChatWindowProps {
     chat: IChat | null;
@@ -46,13 +47,25 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
                             const {children, className, node, ...rest} = props
                             const match = /language-(\w+)/.exec(className || '')
                             return match ? (
-                                <SyntaxHighlighter language={match[1]} children={String(children).replace(/\n$/, '')} />
+                                <SyntaxHighlighter PreTag='div' style={atomDark} language={match[1]} children={String(children).replace(/\n$/, '')} />
                             ) : (
                             <code {...rest} className={className}>
                                 {children}
                             </code>
                             )
-                        }
+                        },
+                        h1(props) {
+                            return <h1 className='text-2xl font-einaBold' {...props} />
+                        },
+                        h2(props) {
+                            return <h2 className='text-xl font-einaBold' {...props} />
+                        },
+                        ol(props) {
+                            return <ol className='list-decimal list-inside' {...props} />
+                        },
+                        ul(props) {
+                            return <ul className='list-disc list-inside' {...props} />
+                        },
                         }}
                     /> : <p>{message.content}</p>}
                     <p className="text-body-dark">{message.role === 'assistant' ? 'Assistant' : chat?.name}</p>

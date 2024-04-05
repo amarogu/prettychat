@@ -14,16 +14,16 @@ const config: Config = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       colors: {
-        'body-light': '#0A0908',
-        'accent': '#3066BE',
-        'papaya': '#FFEECF',
-        'body-dark': '#FFF8EBB3',
-        'body-dark-emphasized': '#FFF8EB',
-        'gray': '#1E293B',
-        'borders': '#E5E7EB',
-        'background': '#0B1121',
-        'background-light': '#F5F5F7',
-        "background-light-emphasized": "#FFFFFF"
+        'primary-100': '#808080',
+        'primary-200': '#656565',
+        'primary-300': '#2b2b2b',
+        'accent-100': '#C0C0C0',
+        'accent-200': '#626262',
+        'text-100': '#333333',
+        'text-200': '#5c5c5c',
+        'bg-100': '#F2F2F2',
+        'bg-200': '#e8e8e8',
+        'bg-300': '#bfbfbf'
       },
       fontFamily: {
         einaReg: ['var(--font-eina-reg)'],
