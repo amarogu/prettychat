@@ -11,15 +11,15 @@ interface BtnProps {
 export default function Btn({content, onClick, href, disabled, type}: BtnProps) {
     if (onClick) {
         return (
-            <button type={type} disabled={disabled} onClick={onClick} className="bg-accent-100 py-2 px-4 rounded-sm focus:outline outline-offset-2 outline-accent">{content}</button>
+            <button type={type} disabled={disabled} onClick={onClick} className="bg-accent-100 dark:bg-dark-accent-100 py-2 px-4 rounded-sm focus:outline outline-offset-2 outline-accent">{content}</button>
         )
     } else if (href) {
         return (
-            <Link aria-disabled={disabled} className="bg-accent-100 text-center px-4 py-2 rounded-sm focus:outline outline-offset-2 outline-accent" href={href}>{content}</Link>
+            <Link aria-disabled={disabled} className="bg-accent-100 dark:bg-dark-accent-100 text-center px-4 py-2 rounded-sm focus:outline outline-offset-2 outline-accent" href={href}>{content}</Link>
         )
     } else {
         return (
-            <button type={type} disabled={disabled} className="bg-accent-100 px-4 py-2 rounded-sm focus:outline outline-offset-2 outline-accent">{content}</button>
+            <button type={type} disabled={disabled} className="bg-accent-100 dark:bg-dark-accent-100 px-4 py-2 rounded-sm focus:outline outline-offset-2 outline-accent">{content}</button>
         )
     }
 }

@@ -30,7 +30,7 @@ export default function Sidebar({chats, createChat, deleteChat, updateChat}: Sid
                     const formattedDate = `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`;
                     return (
                         <button key={chat._id} className="text-left" onClick={() => updateChat(chat)}>
-                            <div className="flex flex-col gap-2 p-4 rounded-sm bg-bg-200">
+                            <div className="flex flex-col gap-2 p-4 rounded-sm bg-bg-200 dark:bg-dark-bg-200">
                                 <div className="flex items-center justify-between">
                                     <p>{chat.title}</p>
                                     <button className="hover:scale-125" onClick={async (e) => {e.stopPropagation(); const updatedChats = await deleteChat(chat._id); updateChat(updatedChats[0])}}>
@@ -43,7 +43,7 @@ export default function Sidebar({chats, createChat, deleteChat, updateChat}: Sid
                     )
                 })
             }</div>
-            <div className="flex p-4 rounded-sm bg-bg-200">
+            <div className="flex p-4 rounded-sm bg-bg-200 dark:bg-dark-bg-200">
                 <div className="flex items-start flex-col gap-2">
                     <div className="flex gap-2 items-center">
                         <Image src={Account} width={16} alt="Profile placeholder image" />

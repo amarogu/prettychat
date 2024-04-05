@@ -38,7 +38,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
     const shouldDisplayChat = () => {
         if (messages.length !== 0) {
             return messages.map((message) => {return (
-                <div key={message.id} className={`${message.role === 'user' ? 'self-end ml-8' : 'self-start mr-8'} bg-bg-200 flex flex-col gap-2 p-4`}>
+                <div key={message.id} className={`${message.role === 'user' ? 'self-end ml-8' : 'self-start mr-8'} bg-bg-200 dark:bg-dark-bg-200 flex flex-col gap-2 p-4`}>
                     {useMd ? 
                     <Markdown
                         children={message.content}
@@ -170,7 +170,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
                 <div ref={chatEndRef}></div>
             </div>
             <form className="flex gap-2" onSubmit={handleSubmit}>
-                <Input value={input} onChange={handleInputChange} id="message-input" placeholder="Type a message" className="bg-gray grow outline-gray" />
+                <Input value={input} onChange={handleInputChange} id="message-input" placeholder="Type a message" className="grow outline-bg-300 dark:outline-dark-bg-300 bg-bg-200 dark:bg-dark-bg-200" />
                 <Btn content="Send" disabled={isLoading} type="submit" />
                 <Btn content="Stop" onClick={() => stop()} />
             </form>
