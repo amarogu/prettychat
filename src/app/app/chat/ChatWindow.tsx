@@ -150,14 +150,14 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
             <div className='flex justify-between items-center relative'>
                 <button className='text-lg' ref={btnRef} onClick={() => setOpen(!open)}>{parseModel(model)}</button>
                 <button ref={optsBtnRef} onClick={() => setOptsWindow(!optsWindow)}><Image width={16} height={16} src={Settings} alt='Options' /></button>
-                <div ref={modelsRef} className={`absolute backdrop-blur-[2px] ${open ? 'block' : 'hidden'} p-4 rounded-sm border-borders/50 border bottom-0 bg-gradient-to-b from-gray/75 to-gray translate-y-[calc(100%+1rem)]`}>
+                <div ref={modelsRef} className={`absolute backdrop-blur-[2px] ${open ? 'block' : 'hidden'} p-4 rounded-sm border-primary-300/50 border bottom-0 bg-gradient-to-b from-bg-300/75 to-bg-300 translate-y-[calc(100%+1rem)]`}>
                     <ul className='flex gap-2 flex-col'>
                         {   
                         models.map((m, i) => {
                             return (
                                 <li className='flex justify-between gap-4 items-center' key={i}>
                                     <button onClick={() => setModel(m)}>{parseModel(m)}</button>
-                                    {model === m ? <div className='w-2 h-2 rounded-full bg-background-light-emphasized'></div> : null}
+                                    {model === m ? <div className='w-1 h-1 rounded-full bg-text-100'></div> : null}
                                 </li>
                             )
                         })
@@ -174,13 +174,13 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
                 <Btn content="Send" disabled={isLoading} type="submit" />
                 <Btn content="Stop" onClick={() => stop()} />
             </form>
-            <div ref={optsRef} className={`${optsWindow ? 'block' : 'hidden'} absolute p-4 rounded-sm bg-gradient-to-b backdrop-blur-[2px] border-borders/50 border from-gray/75 to-gray top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-4`}>
+            <div ref={optsRef} className={`${optsWindow ? 'block' : 'hidden'} absolute p-4 rounded-sm bg-gradient-to-b backdrop-blur-[2px] border-primary-300/50 border from-bg-300/75 to-bg-300 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-4`}>
                 <h2 className='text-lg font-einaBold'>Options</h2>
                 <div className='flex flex-col gap-4'>
                     <button onClick={() => setUseMd(!useMd)} className='flex justify-between items-center gap-4'>
                         <p>Use markdown for formatting</p>
-                        <div className={`${useMd ? 'bg-accent' : 'bg-body-dark'} w-8 h-4 relative rounded-full`}>
-                            <span className={`h-2 w-2 inline-block absolute ${useMd ? 'right-0' : 'left-0'} -translate-y-1/2 mx-1 top-1/2  rounded-full bg-white`}></span>
+                        <div className={`${useMd ? 'bg-primary-200' : 'bg-primary-100'} w-8 h-4 relative rounded-full`}>
+                            <span className={`h-2 w-2 inline-block absolute ${useMd ? 'right-0' : 'left-0'} -translate-y-1/2 mx-1 top-1/2  rounded-full bg-bg-300`}></span>
                         </div>
                     </button>
                 </div>
