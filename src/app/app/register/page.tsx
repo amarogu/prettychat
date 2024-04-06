@@ -34,9 +34,9 @@ export default function App() {
         <main className="h-screen flex items-center justify-center p-8">
             <Popup title="Register" message="Remember. Everything here is self-hosted, so you're fine inserting your API key.">
                 <form className="flex flex-col gap-4">
-                    <Input id="api-key" placeholder="API Key" />
-                    <Input id="api-key-name" placeholder="API Key Name" />
-                    <Input type="password" id="password" placeholder="Password" />
+                    <Input id="api-key" placeholder="API Key" className="outline-bg-300 dark:outline-dark-bg-300 bg-bg-300 dark:bg-dark-bg-300" />
+                    <Input id="api-key-name" placeholder="API Key Name" className="outline-bg-300 dark:outline-dark-bg-300 bg-bg-300 dark:bg-dark-bg-300" />
+                    <Input type="password" id="password" className="outline-bg-300 dark:outline-dark-bg-300 bg-bg-300 dark:bg-dark-bg-300" placeholder="Password" />
                     <Btn onClick={async (e) => {
                         e.preventDefault();
                         const response = await handleContinue();

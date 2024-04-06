@@ -38,8 +38,8 @@ export default function App() {
         <main className="h-screen flex items-center justify-center p-8">
             <Popup title="Login 🚪" message="To login, please insert the name assigned to your API Key and its password, both of which were defined at the moment of registration.">
                 <form className="flex flex-col gap-4">
-                    <Input id="api-key-name" placeholder="API Key Name" />
-                    <Input id="password" type="password" placeholder="API Key password" />
+                    <Input id="api-key-name" className="outline-bg-300 dark:outline-dark-bg-300 bg-bg-300 dark:bg-dark-bg-300" placeholder="API Key Name" />
+                    <Input id="password" className="outline-bg-300 dark:outline-dark-bg-300 bg-bg-300 dark:bg-dark-bg-300" type="password" placeholder="API Key password" />
                     <Btn onClick={async (e) => {
                         e.preventDefault();
                         setRes(await handleContinue());
