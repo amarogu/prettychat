@@ -152,7 +152,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
         chatEndRef.current?.scrollIntoView();
     };
 
-    useEffect(scrollToBottom);
+    useEffect(scrollToBottom, [messages]);
 
     return (
         <section className="flex h-full grow gap-4 flex-col">

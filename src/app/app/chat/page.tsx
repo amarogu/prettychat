@@ -23,6 +23,7 @@ export default function Chat() {
         await axiosInstance.get('/createChat');
         const chats = await axiosInstance.get('/chats');
         setChats(chats.data);
+        setInitialChats(chats.data);
         setCurrentChat(chats.data[0]);
     }
 
@@ -30,6 +31,7 @@ export default function Chat() {
         await axiosInstance.post('/deleteChat', {_id: chatID});
         const chats = await axiosInstance.get('/chats');
         setChats(chats.data);
+        setInitialChats(chats.data);
         return chats.data;
     }
 
@@ -44,6 +46,13 @@ export default function Chat() {
             }
         }
         ));
+        setInitialChats(chats.map((chat) => {
+            if (chat._id === chatId) {
+                return fetchedChat.data;
+            } else {
+                return chat;
+            }
+        }));
     };
 
     const findChats = async (search: string) => {
@@ -56,6 +65,12 @@ export default function Chat() {
         } else {
             setChats([]);
         }
+    }
+
+    const fetchChats = async () => {
+        const chats = await axiosInstance.get('/chats');
+        setChats(chats.data);
+        setInitialChats(chats.data);
     }
 
     useEffect(() => {
