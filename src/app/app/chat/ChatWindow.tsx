@@ -156,23 +156,28 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
 
     return (
         <section className="flex h-full grow gap-4 flex-col">
-            <div className='flex justify-between items-center relative'>
-                <button className='text-lg' ref={btnRef} onClick={() => setOpen(!open)}>{parseModel(model)}</button>
-                <button ref={optsBtnRef} onClick={() => setOptsWindow(!optsWindow)}><Image width={16} height={16} src={isDarkMode ? SettingsDark : Settings} alt='Options' /></button>
-                <div ref={modelsRef} className={`absolute z-10 backdrop-blur-[2px] ${open ? 'block' : 'hidden'} p-4 rounded-sm border-primary-300/50 dark:border-dark-primary-300/50 border bottom-0 bg-gradient-to-b from-bg-300/75 dark:from-dark-bg-300/75 to-bg-300 dark:to-dark-bg-300 translate-y-[calc(100%+1rem)]`}>
-                    <ul className='flex gap-2 flex-col'>
-                        {   
-                        models.map((m, i) => {
-                            return (
-                                <li className='flex justify-between gap-4 items-center' key={i}>
-                                    <button onClick={() => setModel(m)}>{parseModel(m)}</button>
-                                    {model === m ? <div className='w-1 h-1 rounded-full bg-text-100 dark:bg-dark-text-100'></div> : null}
-                                </li>
-                            )
-                        })
-                        }
-                    </ul>
+            <div className='flex justify-between items-center'>
+                <div className='flex gap-4 items-center'> 
+                    <h2 className='text-xl font-einaBold'>{chat?.title}</h2>
+                    <div className='relative'>
+                        <button className='text-lg' ref={btnRef} onClick={() => setOpen(!open)}>{parseModel(model)}</button>
+                        <div ref={modelsRef} className={`absolute z-10 backdrop-blur-[2px] ${open ? 'block' : 'hidden'} p-4 rounded-sm border-primary-300/50 dark:border-dark-primary-300/50 border bottom-0 bg-gradient-to-b from-bg-300/75 dark:from-dark-bg-300/75 to-bg-300 dark:to-dark-bg-300 translate-y-[calc(100%+1rem)] w-60`}>
+                            <ul className='flex gap-2 flex-col'>
+                                {   
+                                models.map((m, i) => {
+                                    return (
+                                        <li className='flex justify-between gap-4 items-center' key={i}>
+                                            <button onClick={() => setModel(m)}>{parseModel(m)}</button>
+                                            {model === m ? <div className='w-1 h-1 rounded-full bg-text-100 dark:bg-dark-text-100'></div> : null}
+                                        </li>
+                                    )
+                                })
+                                }
+                            </ul>
+                        </div>
+                    </div>
                 </div>
+                <button ref={optsBtnRef} onClick={() => setOptsWindow(!optsWindow)}><Image width={16} height={16} src={isDarkMode ? SettingsDark : Settings} alt='Options' /></button>
             </div>
             <div className="grow flex flex-col gap-4 overflow-y-scroll justify-start">
                 {shouldDisplayChat()}
