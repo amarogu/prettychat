@@ -5,6 +5,8 @@ import { IChat } from "../../../../models/Chat";
 import axiosInstance from "../../../../axiosInstance";
 import Sidebar from "./Sidebar";
 import ChatWindow from "./ChatWindow";
+import { Message } from "ai";
+import { IMessage } from "../../../../models/Message";
 
 export default function Chat() {
     const {data: session} = useSession();
@@ -17,6 +19,16 @@ export default function Chat() {
 
     const updateChat = (chat: IChat) => {
         setCurrentChat(chat);
+    }
+
+    const updateChatMsgs = (chat: IChat, messages: IMessage[]) => {
+        setChats(chats.map(c => {
+            if (c._id === chat._id) {
+                return {...chat, messages};
+            } else {
+                return c;
+            }
+        }));
     }
 
     const createChat = async () => {

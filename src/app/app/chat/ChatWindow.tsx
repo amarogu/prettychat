@@ -94,7 +94,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
 
     useEffect(() => {
         if (chat) {
-            setMessages(chat.messages.map((msg) => {return {id: msg._id, content: msg.content, role: msg.role, createdAt: new Date(msg.createdAt)}}));
+            setMessages(chat.messages.map(msg => {return {id: msg._id, content: msg.content, role: msg.role, createdAt: new Date(msg.createdAt)}}));
         }
     }, [chat]);
 
