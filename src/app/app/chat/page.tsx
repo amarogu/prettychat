@@ -5,10 +5,9 @@ import { IChat } from "../../../../models/Chat";
 import axiosInstance from "../../../../axiosInstance";
 import Sidebar from "./Sidebar";
 import ChatWindow from "./ChatWindow";
-import { Message } from "ai";
-import { IMessage } from "../../../../models/Message";
 
 export default function Chat() {
+
     const {data: session} = useSession();
 
     const [chats, setChats] = useState<IChat[]>([]);
@@ -16,20 +15,6 @@ export default function Chat() {
     const [currentChat, setCurrentChat] = useState<IChat | null>(null);
 
     const [initialChats, setInitialChats] = useState<IChat[]>([]);
-
-    const updateChat = (chat: IChat) => {
-        setCurrentChat(chat);
-    }
-
-    const updateChatMsgs = (chat: IChat, messages: IMessage[]) => {
-        setChats(chats.map(c => {
-            if (c._id === chat._id) {
-                return {...chat, messages};
-            } else {
-                return c;
-            }
-        }));
-    }
 
     const createChat = async () => {
         await axiosInstance.get('/createChat');
@@ -44,7 +29,7 @@ export default function Chat() {
         const chats = await axiosInstance.get('/chats');
         setChats(chats.data);
         setInitialChats(chats.data);
-        return chats.data;
+        setCurrentChat(chats.data[0]);
     }
 
     const getChat = async (chatId: string) => {
@@ -79,12 +64,6 @@ export default function Chat() {
         }
     }
 
-    const fetchChats = async () => {
-        const chats = await axiosInstance.get('/chats');
-        setChats(chats.data);
-        setInitialChats(chats.data);
-    }
-
     useEffect(() => {
         const fetchChats = async () => {
             const chats = await axiosInstance.get('/chats');
@@ -97,7 +76,7 @@ export default function Chat() {
 
     return (
         <main id="main" className="p-8 flex relative gap-8 h-screen">
-            <Sidebar chats={chats} findChats={findChats} updateChat={updateChat} createChat={createChat} deleteChat={deleteChat} />
+            <Sidebar getChat={getChat} chats={chats} findChats={findChats} createChat={createChat} deleteChat={deleteChat} />
             <ChatWindow chat={currentChat} getChat={getChat} />
         </main>
     )

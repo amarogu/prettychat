@@ -12,13 +12,13 @@ import SearchDark from '../../../../public/search_dark.svg';
 
 interface SidebarProps {
     chats: IChat[];
-    updateChat: (chat: IChat) => void;
     createChat: () => void;
-    deleteChat: (chatID: string) => Promise<IChat[]>;
+    deleteChat: (chatID: string) => Promise<void>;
     findChats: (search: string) => void;
+    getChat: (chatId: string) => Promise<void>;
 }
 
-export default function Sidebar({chats, createChat, deleteChat, updateChat, findChats}: SidebarProps) {
+export default function Sidebar({chats, createChat, deleteChat, findChats, getChat}: SidebarProps) {
 
     const {data: session} = useSession();
     const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
@@ -41,11 +41,11 @@ export default function Sidebar({chats, createChat, deleteChat, updateChat, find
                     const date = new Date(chat.updatedAt);
                     const formattedDate = `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`;
                     return (
-                        <button key={chat._id} className="text-left" onClick={() => updateChat(chat)}>
+                        <button key={chat._id} className="text-left" onClick={async () => await getChat(chat._id)}>
                             <div className="flex flex-col gap-2 p-4 rounded-sm bg-bg-200 dark:bg-dark-bg-200">
                                 <div className="flex items-center justify-between">
                                     <p>{chat.title}</p>
-                                    <button className="hover:scale-125" onClick={async (e) => {e.stopPropagation(); const updatedChats = await deleteChat(chat._id); updateChat(updatedChats[0])}}>
+                                    <button className="hover:scale-125" onClick={async (e) => {e.stopPropagation(); await deleteChat(chat._id)}}>
                                         <Image src={isDarkMode ? DeleteDark : Delete} width={16} alt="Delete chat" />
                                     </button>
                                 </div>
