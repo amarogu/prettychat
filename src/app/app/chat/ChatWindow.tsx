@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Btn from "@/app/Btn";
 import Input from "@/app/Input";
-import { IChat } from "../../../../models/Chat"; // Ensure IMessage is imported
+import { IChat } from "../../../../models/Chat";
 import { useChat } from 'ai/react';
 import axiosInstance from '../../../../axiosInstance';
 import Settings from '../../../../public/settings.svg';
