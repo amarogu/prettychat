@@ -79,7 +79,7 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
                         },
                         }}
                     /> : <p>{message.content}</p>}
-                    <p className="text-body-dark">{message.role === 'assistant' ? 'Assistant' : chat?.name}</p>
+                    <p className="text-text-100/75 dark:text-dark-text-100/75">{message.role === 'assistant' ? 'Assistant' : chat?.name}</p>
                 </div>
             )});
         } else {
