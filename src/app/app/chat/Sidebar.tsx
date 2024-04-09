@@ -49,7 +49,7 @@ export default function Sidebar({chats, createChat, deleteChat, findChats, getCh
                                         <Image src={isDarkMode ? DeleteDark : Delete} width={16} alt="Delete chat" />
                                     </button>
                                 </div>
-                                <p className="text-body-dark">{formattedDate}</p>
+                                <p className="text-text-100/75 dark:text-dark-text-100/75">{formattedDate}</p>
                             </div>
                         </button>
                     )
