@@ -1,4 +1,4 @@
-# Chat Solution v0.1.1
+# PrettyChat v0.1.1
 
 ## Overview
 
