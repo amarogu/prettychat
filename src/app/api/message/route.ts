@@ -16,29 +16,21 @@ export async function POST(req: NextRequest) {
             const chat = await Chat.findById(reqBody.chatId); 
             if (chat) {
                 if (session.user?.name === chat.name) {
-                    // manage db operations
+                    
                     const messages = reqBody.messages.map(msg => {
                         const message = new PersistentMsg({content: msg.content, role: msg.role, chatId: chat._id})
                         return message;
                     });
                     const messageIds = messages.map(msg => msg._id);
                     chat.messages = messageIds;
-                    // Delete messages that belong to the chat before saving new messages, except for the messages that are in the chat.messages array
+                    
                     await chat.save();
                     await PersistentMsg.insertMany(messages);
                     await PersistentMsg.deleteMany({chatId: chat._id, _id: {$nin: messageIds}});
 
-                    // generate completion
-                    // 1 get user's openai key
-                    // 2 generate completion
                     const user = await User.findOne({name: session.user.name});
-                    const openai = new OpenAI({apiKey: user?.apiKey});
-                    const completion = await openai.chat.completions.create({
-                        model: reqBody.model,
-                        messages: reqBody.useMd ? [{role: 'system', content: 'Respond to the user in Markdown notation'}, ...messages.map(msg => ({role: msg.role as 'system' | 'assistant' | 'user', content: msg.content}))] : messages.map(msg => ({role: msg.role as 'system' | 'assistant' | 'user', content: msg.content})),
-                        stream: true
-                    });
-                    // 3 stream completion
+                    const completion = await generateCompletion(user, reqBody, messages);
+                    
                     const stream = OpenAIStream(completion, {
                         onCompletion: async (res) => {
                             const message = new PersistentMsg({content: res, role: 'assistant', chatId: chat._id});
@@ -62,3 +54,14 @@ export async function POST(req: NextRequest) {
         return Response.json({message: 'An error occurred', error: err});
     }
 }
+
+async function generateCompletion(user: (import("mongoose").Document<unknown, {}, { name: string; apiKey: string; password: string; }> & { name: string; apiKey: string; password: string; } & { _id: import("mongoose").Types.ObjectId; }) | null, reqBody: { messages: Message[]; chatId: string; model: string; useMd: boolean; }, messages: (import("mongoose").Document<unknown, {}, { createdAt: NativeDate; updatedAt: NativeDate; } & { role: "function" | "user" | "system" | "assistant" | "data" | "tool"; content: string; chatId: import("mongoose").Types.ObjectId; }> & { createdAt: NativeDate; updatedAt: NativeDate; } & { role: "function" | "user" | "system" | "assistant" | "data" | "tool"; content: string; chatId: import("mongoose").Types.ObjectId; } & { _id: import("mongoose").Types.ObjectId; })[]) {
+    const openai = new OpenAI({ apiKey: user?.apiKey });
+    const completion = await openai.chat.completions.create({
+        model: reqBody.model,
+        messages: reqBody.useMd ? [{ role: 'system', content: 'Respond to the user in Markdown notation' }, ...messages.map(msg => ({ role: msg.role as 'system' | 'assistant' | 'user', content: msg.content }))] : messages.map(msg => ({ role: msg.role as 'system' | 'assistant' | 'user', content: msg.content })),
+        stream: true
+    });
+    return completion;
+}
+
