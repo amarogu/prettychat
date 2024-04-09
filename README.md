@@ -24,15 +24,15 @@ While we're continuously working on expanding the customization options, Chat So
 
 We're excited to share our roadmap for future updates, which will significantly enhance the functionality and user experience of Chat Solution:
 
-### Audio Transcription Capabilities
+- ### Audio Transcription Capabilities
 
 In the near future, we plan to introduce audio transcription capabilities. This feature will allow users to interact with the chatbot using voice commands, making the application more accessible and convenient.
 
-### Access to the Web
+- ### Access to the Web
 
 We're working on a feature that will enable Chat Solution to access the web. This will open up a wide range of possibilities, including the ability to fetch real-time information, perform web searches, and more, directly within the chat interface.
 
-### File Context
+- ### File Context
 
 To further enhance the user experience, we're planning to introduce a file context feature. This will allow users to upload files or documents and have the chatbot process them, providing more dynamic and interactive conversations.
 
