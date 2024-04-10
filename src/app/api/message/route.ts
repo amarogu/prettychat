@@ -1,12 +1,23 @@
 import { NextRequest } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
-import { Chat, IChat } from "../../../../models/Chat";
+import { Chat } from "../../../../models/Chat";
 import { Message } from "ai/react";
 import { Message as PersistentMsg } from "../../../../models/Message";
 import OpenAI from 'openai';
 import { User } from "../../../../models/User";
 import { OpenAIStream, StreamingTextResponse } from 'ai';
+import { CheerioWebBaseLoader } from "langchain/document_loaders/web/cheerio";
+import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
+import { OpenAIEmbeddings } from "@langchain/openai";
+
+const embeddings = new OpenAIEmbeddings();
+
+const splitter = new RecursiveCharacterTextSplitter();
+
+const loader = new CheerioWebBaseLoader(
+  "https://docs.smith.langchain.com/user_guide"
+);
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
@@ -39,6 +50,13 @@ export async function POST(req: NextRequest) {
                             await chat.save();
                         }
                     });
+
+                    const docs = await loader.load();
+
+                    const splitDocs = await splitter.splitDocuments(docs);
+
+                    console.log(splitDocs.length);
+                    console.log(splitDocs[0].pageContent);
 
                     return new StreamingTextResponse(stream);
                 } else {

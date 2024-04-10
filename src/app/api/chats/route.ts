@@ -1,4 +1,3 @@
-import { NextRequest } from "next/server";
 import connectDb from "../../../../connect";
 import { Chat } from "../../../../models/Chat";
 import { getServerSession } from "next-auth";
