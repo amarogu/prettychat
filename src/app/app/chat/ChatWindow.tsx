@@ -187,9 +187,11 @@ export default function ChatWindow({chat, getChat}: ChatWindowProps) {
             </div>
             <form className="flex gap-2 items-end" onSubmit={handleSubmit}>
                 <Input type='textarea' value={input} onChange={handleInputChange} id="message-input" placeholder="Type a message" className="grow outline-bg-300 dark:outline-dark-bg-300 bg-bg-200 dark:bg-dark-bg-200" />
-                <Btn content="Send" disabled={isLoading} type="submit" />
-                <Btn content="Stop" onClick={() => stop()} />
-                <Btn id='attach-file' type='file' content={isDarkMode ? <Image src={AttachDark} alt='Attach file' width={16} height={16} /> : <Image src={Attach} width={16} height={16} alt='Attach file' />} />
+                <div className='flex gap-2 items-end'>
+                    <Btn content="Send" disabled={isLoading} type="submit" />
+                    <Btn content="Stop" onClick={() => stop()} />
+                    <Btn id='attach-file' type='file' content={isDarkMode ? <Image src={AttachDark} alt='Attach file' width={16} height={16} /> : <Image src={Attach} width={16} height={16} alt='Attach file' />} />
+                </div>
             </form>
             <div ref={optsRef} className={`${optsWindow ? 'block' : 'hidden'} absolute p-4 rounded-sm bg-gradient-to-b backdrop-blur-[2px] border-primary-300/50 dark:border-dark-primary-300/50 border from-bg-300/75 dark:from-dark-bg-300/75 to-bg-300 dark:to-dark-bg-300 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-4`}>
                 <h2 className='text-lg font-einaBold'>Options</h2>
